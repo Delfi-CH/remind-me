@@ -79,7 +79,7 @@ async function scheduleNotification(time, message, id) {
   const timeoutId = setTimeout(() => {
     const n = new Notification({ title: "Reminder!", subtitle: message, body: message });
     n.show();
-    setTimeout(() => n.close(), 5000);
+    setTimeout(() => n.close(), 10000);
     scheduledNotifications.delete(id);
   }, diff);
 
