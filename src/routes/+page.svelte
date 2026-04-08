@@ -1,15 +1,27 @@
 <script>
     import { onMount } from "svelte" 
-    import { genUUID } from "$lib/database/db";
-    let uuid = $state()
+    import { getAllReminders } from "$lib/database/db";
+    import Create from "$lib/components/Create.svelte";
+    import Viewer from "$lib/components/Viewer.svelte";
+    import {resolve} from "$app/paths";
+
+    let reminders = $state()
+
     onMount(async ()=>{
-        const tmpUUID = await genUUID()
-        uuid = tmpUUID
-        console.log(uuid)
+        await refetchAll()
     })
+
+    async function refetchAll() {
+        const tmpReminders = await getAllReminders()
+        reminders = tmpReminders
+    }
 </script>
 
 <main>
     <h1>remind-me</h1>
-    <p>uuid: {uuid}</p>
+    <Create onSubmit={async ()=> await refetchAll()}></Create>
+    {#each reminders as reminder (reminder.id)}
+        <Viewer reminder={reminder} onRefetch={async ()=> refetchAll()}></Viewer>
+    {/each}
+    <p><a href={resolve("/settings")}>Settings</a></p>
 </main>
