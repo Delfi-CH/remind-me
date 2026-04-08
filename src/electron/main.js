@@ -39,7 +39,7 @@ function createWindow() {
   if (isDev) {
     win.loadURL('http://localhost:5173');
   } else {
-    win.loadFile(path.join(__dirname, '../build/index.html'));
+    win.loadFile(path.join(__dirname, '../../build/index.html'));
   }
 }
 
