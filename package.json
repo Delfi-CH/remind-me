@@ -1,6 +1,8 @@
 {
 	"name": "remind-me",
 	"private": true,
+	"description": "Minimal App to set reminders",
+	"author": {},
 	"version": "0.0.1",
 	"type": "module",
 	"main": "src/electron/main.js",
@@ -11,8 +13,169 @@
 		"prepare": "svelte-kit sync || echo ''",
 		"lint": "eslint .",
 		"electron": "electron .",
-		"electron:dev": "concurrently \"vite dev\" \"wait-on http://localhost:5173 && electron .\"",
-		"android": "vite build && npx cap sync android && npx cap run android"
+		"electron:dev": "vite build && concurrently \"vite dev\" \"wait-on http://localhost:5173 && electron .\"",
+		"electron:dist": "vite build && electron-builder",
+		"android": "vite build && cap sync android && cap run android",
+		"postinstall": "electron-rebuild"
+	},
+	"build": {
+		"npmRebuild": true,
+		"buildDependenciesFromSource": true,
+		"appId": "dev.delfi.remind_me",
+		"productName": "Remind Me",
+		"directories": {
+			"output": "dist",
+			"buildResources": "build"
+		},
+		"files": [
+			"dist/**/*",
+			"dist-electron/**/*",
+			"!**/*.map",
+			"!**/test/**",
+			"!**/*.md",
+			"src/electron/**/*",
+			"src/**/**/**"
+		],
+		"asar": true,
+		"asarUnpack": [
+			"**/*.node"
+		],
+		"win": {
+			"target": [
+				{
+					"target": "nsis",
+					"arch": [
+						"x64",
+						"arm64"
+					]
+				}
+			],
+			"artifactName": "${productName}-Setup-${version}-${arch}.${ext}"
+		},
+		"nsis": {
+			"oneClick": false,
+			"perMachine": false,
+			"allowToChangeInstallationDirectory": true,
+			"createDesktopShortcut": true,
+			"createStartMenuShortcut": true
+		},
+		"mac": {
+			"target": [
+				{
+					"target": "dmg",
+					"arch": [
+						"x64",
+						"arm64"
+					]
+				},
+				{
+					"target": "zip",
+					"arch": [
+						"x64",
+						"arm64"
+					]
+				}
+			],
+			"category": "public.app-category.productivity",
+			"artifactName": "${productName}-${version}-${arch}.${ext}"
+		},
+		"dmg": {
+			"title": "${productName} ${version}",
+			"iconSize": 128,
+			"contents": [
+				{
+					"x": 130,
+					"y": 220
+				},
+				{
+					"x": 410,
+					"y": 220,
+					"type": "link",
+					"path": "/Applications"
+				}
+			]
+		},
+		"linux": {
+			"target": [
+				{
+					"target": "AppImage",
+					"arch": [
+						"x64"
+					]
+				},
+				{
+					"target": "deb",
+					"arch": [
+						"x64"
+					]
+				},
+				{
+					"target": "rpm",
+					"arch": [
+						"x64"
+					]
+				},
+				{
+					"target": "pacman",
+					"arch": [
+						"x64"
+					]
+				},
+				{
+					"target": "flatpak",
+					"arch": [
+						"x64"
+					]
+				}
+			],
+			"category": "Utility",
+			"artifactName": "${productName}-${version}-${arch}.${ext}",
+			"maintainer": "Your Name <you@example.com>",
+			"synopsis": "Minimal reminder app",
+			"description": "A minimal cross-platform reminder application built with Electron and Svelte."
+		},
+		"deb": {
+			"depends": [
+				"libnotify4",
+				"libnss3",
+				"libxss1",
+				"libxtst6",
+				"xdg-utils",
+				"libatspi2.0-0",
+				"libuuid1",
+				"libsecret-1-0",
+				"libappindicator3-1"
+			]
+		},
+		"rpm": {
+			"depends": [
+				"libnotify",
+				"nss",
+				"libXScrnSaver",
+				"libXtst",
+				"xdg-utils",
+				"at-spi2-core",
+				"libuuid",
+				"libsecret",
+				"libappindicator"
+			]
+		},
+		"flatpak": {
+			"runtime": "org.freedesktop.Platform",
+			"runtimeVersion": "23.08",
+			"sdk": "org.freedesktop.Sdk",
+			"base": "org.electronjs.Electron2.BaseApp",
+			"baseVersion": "23.08",
+			"finishArgs": [
+				"--share=network",
+				"--socket=x11",
+				"--socket=wayland",
+				"--device=dri",
+				"--filesystem=home",
+				"--talk-name=org.kde.StatusNotifierWatcher"
+			]
+		},
+		"publish": null
 	},
 	"devDependencies": {
 		"@capacitor/cli": "^8.3.0",
@@ -25,6 +188,7 @@
 		"@types/node": "^22",
 		"concurrently": "^9.2.1",
 		"electron": "^41.2.0",
+		"electron-builder": "^26.8.1",
 		"eslint": "^10.2.0",
 		"eslint-plugin-svelte": "^3.17.0",
 		"globals": "^17.4.0",

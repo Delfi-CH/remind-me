@@ -5,7 +5,6 @@
     import Viewer from "$lib/components/Viewer.svelte";
     import {resolve} from "$app/paths";
     import { initNotification } from "$lib/notify/notify.js";
-    import { ref } from "process";
 
     let reminders = $state()
 
