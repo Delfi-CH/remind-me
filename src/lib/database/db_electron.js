@@ -7,7 +7,7 @@ import fs from "fs";
 export function initDB_Electron() {
     try {
         const db = loadDB_Electron();
-        initSchema_Electron();
+        initSchema_Electron(db);
         return db;
     } catch (e) {
         console.error("Failed to init DB:", e);

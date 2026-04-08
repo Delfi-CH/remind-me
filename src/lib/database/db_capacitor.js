@@ -21,7 +21,7 @@ export async function genUUID_Capacitor() {
     
     if (value) {
         const parsed = JSON.parse(value);
-        return new User(parsed.uuid);
+        return new User(parsed.uuid).uuid;
     }
 
     const uuid = crypto.randomUUID();
