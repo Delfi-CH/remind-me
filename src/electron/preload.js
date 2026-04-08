@@ -9,3 +9,9 @@ contextBridge.exposeInMainWorld("db", {
   updateReminder: (oldDate, oldMessage, newDate, newMessage) =>
     ipcRenderer.invoke("db:updateReminder", oldDate, oldMessage, newDate, newMessage)
 });
+
+contextBridge.exposeInMainWorld("notify", {
+    scheduleNotification: async (time, message) => await ipcRenderer.invoke("notify:scheduleNotification", time, message),
+    cancelNotification: (id) => ipcRenderer.invoke("notify:cancelNotification", id),
+    getActiveNotifications: () => ipcRenderer.invoke("notify:getActiveNotifications")
+})

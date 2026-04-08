@@ -15,6 +15,8 @@
         const date = new Date(year, month - 1, datePart, hour, minute, 0);
         try {
             await insertReminder(date, message)
+            const e = await window.notify.scheduleNotification(new Date(date), message)
+            console.log(e)
             onSubmit()
         } catch (e) {
             console.error(e)
