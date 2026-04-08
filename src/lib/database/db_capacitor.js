@@ -17,6 +17,13 @@ class Reminder {
 }
 
 export async function genUUID_Capacitor() {
+    const { value } = await Preferences.get({ key: "user" });
+    
+    if (value) {
+        const parsed = JSON.parse(value);
+        return new User(parsed.uuid);
+    }
+
     const uuid = crypto.randomUUID();
     const user = new User(uuid);
     await Preferences.set({
@@ -24,13 +31,6 @@ export async function genUUID_Capacitor() {
         value: JSON.stringify(user),
     });
     return user;
-}
-
-export async function getUser_Capacitor() {
-    const { value } = await Preferences.get({ key: "user" });
-    if (!value) return null;
-    const parsed = JSON.parse(value);
-    return new User(parsed.uuid);
 }
 
 export async function insertReminder_Capacitor(reminderTime, message) {

@@ -46,16 +46,18 @@ function initSchema_Electron(db) {
 }
 
 export function genUUID_Electron(db) {
-    const user = db.prepare("SELECT * FROM users WHERE id = 0").get();
+    let user = db.prepare("SELECT * FROM users WHERE id = 0").get();
 
     if (user && user.id === 0) {
         return user.uuid;
-    } else {
-        const uuid = crypto.randomUUID();
-        db.prepare("DELETE FROM users WHERE id = 0").run();
-        db.prepare("INSERT INTO users (id, uuid) VALUES (?, ?)").run(0, uuid);
-        return uuid;
     }
+
+    const uuid = crypto.randomUUID();
+
+    db.prepare("DELETE FROM users WHERE id = 0").run();
+    db.prepare("INSERT INTO users (id, uuid) VALUES (?, ?)").run(0, uuid);
+
+    return uuid;
 }
 
 export function getAllReminders_Electron(db) {
@@ -82,8 +84,4 @@ export function updateReminder_Electron(db, oldDate, oldMessage, newDate, newMes
     const newDatetime = newDate.toISOString();
     db.prepare("UPDATE reminders SET reminderTime = ?, message = ? WHERE reminderTime = ? AND message = ?")
         .run(newDatetime, newMessage, oldDatetime, oldMessage);
-}
-
-export function getUser_Electron(db) {
-    return db.prepare("SELECT * FROM users WHERE id = 0");
 }

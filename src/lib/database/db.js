@@ -72,13 +72,3 @@ export async function updateReminder(oldDate, oldMessage, newDate, newMessage) {
         return await updateReminder_Capacitor(oldDate, oldMessage, newDate, newMessage);
     }
 }
-
-export async function getUser() {
-    if (electron) {
-        const { getUser_Electron } = await import("./db_electron.js");
-        return getUser_Electron();
-    } else {
-        const { getUser_Capacitor } = await import("./db_capacitor.js");
-        return await getUser_Capacitor();
-    }
-}
