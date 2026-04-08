@@ -1,5 +1,6 @@
 <script>
     import {insertReminder} from "$lib/database/db.js"
+    import {sendNotification} from "$lib/notify/notify.js"
 
     let { onSubmit } = $props()
 
@@ -15,9 +16,8 @@
         const date = new Date(year, month - 1, datePart, hour, minute, 0);
         try {
             await insertReminder(date, message)
-            const e = await window.notify.scheduleNotification(new Date(date), message)
-            console.log(e)
-            onSubmit()
+            await sendNotification(date, message)
+                onSubmit()
         } catch (e) {
             console.error(e)
         }

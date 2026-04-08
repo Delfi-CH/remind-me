@@ -1,5 +1,10 @@
 {
   "appId": "dev.delfi.remind_me",
   "appName": "remind-me",
-  "webDir": "build"
+  "webDir": "build",
+  "plugins": {
+    "LocalNotifications": {
+      "iconColor": "#34C777"
+    }
+  }
 }

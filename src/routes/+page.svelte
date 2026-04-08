@@ -1,13 +1,16 @@
 <script>
     import { onMount } from "svelte" 
-    import { getAllReminders } from "$lib/database/db";
+    import { getAllReminders } from "$lib/database/db.js";
     import Create from "$lib/components/Create.svelte";
     import Viewer from "$lib/components/Viewer.svelte";
     import {resolve} from "$app/paths";
+    import { initNotification } from "$lib/notify/notify.js";
+    import { ref } from "process";
 
     let reminders = $state()
 
     onMount(async ()=>{
+        await initNotification()
         await refetchAll()
     })
 

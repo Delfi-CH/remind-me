@@ -12,7 +12,7 @@
 		"lint": "eslint .",
 		"electron": "electron .",
 		"electron:dev": "concurrently \"vite dev\" \"wait-on http://localhost:5173 && electron .\"",
-		"android": "vite build && npx cap run android"
+		"android": "vite build && npx cap sync android && npx cap run android"
 	},
 	"devDependencies": {
 		"@capacitor/cli": "^8.3.0",
