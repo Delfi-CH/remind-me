@@ -130,7 +130,7 @@
 			],
 			"category": "Utility",
 			"artifactName": "${productName}-${version}-${arch}.${ext}",
-			"maintainer": "Your Name <you@example.com>",
+			"maintainer": "Delfi-CH <delfi@delfi.dev>",
 			"synopsis": "Minimal reminder app",
 			"description": "A minimal cross-platform reminder application built with Electron and Svelte."
 		},
@@ -162,10 +162,10 @@
 		},
 		"flatpak": {
 			"runtime": "org.freedesktop.Platform",
-			"runtimeVersion": "23.08",
+			"runtimeVersion": "25.08",
 			"sdk": "org.freedesktop.Sdk",
 			"base": "org.electronjs.Electron2.BaseApp",
-			"baseVersion": "23.08",
+			"baseVersion": "25.08",
 			"finishArgs": [
 				"--share=network",
 				"--socket=x11",
