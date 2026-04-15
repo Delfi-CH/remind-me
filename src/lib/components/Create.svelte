@@ -27,10 +27,15 @@
 
 <main>
     <form onsubmit={async (e) => await handleSubmit(e)}>
-        <label for="day">Day: <input type="date" id="day" bind:value={day} required></label>
-        <label for="time">Time: <input type="time" id="time" bind:value={time} required></label>
-        <label for="message">Message: <input type="text" id="message" bind:value={message} required></label>
-        <button type="submit">Submit</button>
+        <label for="day" class="form-label">Day & Time: <input type="datetime-local" class="hover form-control" id="day" bind:value={day} required></label>
+        <label for="message" class="form-label">Message: <input type="text" id="message" bind:value={message} class="form-control" required></label>
+        <button type="submit" class="btn btn-primary">Submit</button>
         <p>{status}</p>
     </form>
 </main>
+
+<style>
+    .hover:hover {
+        cursor: pointer;
+    }
+</style>

@@ -65,7 +65,7 @@ export async function deleteReminder_Capacitor(date, message) {
     });
 }
 
-export async function updateReminder(oldDate, oldMessage, newDate, newMessage) {
+export async function updateReminder_Capacitor(oldDate, oldMessage, newDate, newMessage) {
     const oldDatetime = oldDate.toISOString();
     const newDatetime = newDate.toISOString();
     let reminders = await getAllReminders_Capacitor();
@@ -79,4 +79,24 @@ export async function updateReminder(oldDate, oldMessage, newDate, newMessage) {
         key: "reminders",
         value: JSON.stringify(reminders),
     });
+}
+
+export async function initDB_Capacitor() {
+    await Preferences.set({
+        key: "theme",
+        value: "cosmo"
+    })
+}
+
+export async function updateTheme_Capacitor(theme) {
+    await Preferences.set({
+        key: "theme",
+        value: theme
+    })
+}
+
+export async function getTheme_Capacitor() {
+    return await Preferences.get({
+        key: "theme"
+    })
 }

@@ -43,6 +43,15 @@ function initSchema_Electron(db) {
             FOREIGN KEY (userFK) REFERENCES users(id)
         )
     `).run();
+
+    db.prepare(`
+        CREATE TABLE IF NOT EXISTS theme (
+            id INTEGER PRIMARY KEY,
+            themeName TEXT NOT NULL DEFAULT cosmo
+        )
+    `).run();
+
+    db.prepare(`INSERT OR IGNORE INTO theme (id, themeName) VALUES (?, ?)`).run(0, "cosmo");
 }
 
 export function genUUID_Electron(db) {
@@ -84,4 +93,16 @@ export function updateReminder_Electron(db, oldDate, oldMessage, newDate, newMes
     const newDatetime = newDate.toISOString();
     db.prepare("UPDATE reminders SET reminderTime = ?, message = ? WHERE reminderTime = ? AND message = ?")
         .run(newDatetime, newMessage, oldDatetime, oldMessage);
+}
+
+export function updateTheme_Electron(db, themeName) {
+    db.prepare(`
+        INSERT INTO theme (id, themeName)
+        VALUES (0, ?)
+        ON CONFLICT(id) DO UPDATE SET themeName = excluded.themeName
+    `).run(themeName);
+}
+
+export function getTheme_Electron(db) {
+    return db.prepare("SELECT themeName FROM theme WHERE id = 0").get().themeName
 }

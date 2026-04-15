@@ -63,3 +63,21 @@ export async function updateReminder(oldDate, oldMessage, newDate, newMessage) {
     return await updateReminder_Capacitor(oldDate, oldMessage, newDate, newMessage);
   }
 }
+
+export async function getTheme() {
+  if (electron) {
+    return window.db.getTheme()
+  } else {
+    const { getTheme_Capacitor } = await import("./db_capacitor.js");
+    return await getTheme_Capacitor()
+  }
+}
+
+export async function updateTheme(theme) {
+  if (electron) {
+    return window.db.updateTheme(theme)
+  } else {
+    const { updateTheme_Capacitor } = await import("./db_capacitor.js");
+    return await updateTheme_Capacitor(theme)
+  }
+}

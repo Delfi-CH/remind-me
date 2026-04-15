@@ -202,6 +202,8 @@
 		"@capacitor/local-notifications": "^8.0.2",
 		"@capacitor/preferences": "^8.0.1",
 		"better-sqlite3": "^12.8.0",
+		"bootstrap": "^5.3.8",
+		"bootswatch": "^5.3.8",
 		"is-electron": "^2.2.2"
 	}
 }

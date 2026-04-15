@@ -7,7 +7,9 @@ contextBridge.exposeInMainWorld("db", {
   insertReminder: (date, message) => ipcRenderer.invoke("db:insertReminder", date, message),
   deleteReminder: (date, message) => ipcRenderer.invoke("db:deleteReminder", date, message),
   updateReminder: (oldDate, oldMessage, newDate, newMessage) =>
-    ipcRenderer.invoke("db:updateReminder", oldDate, oldMessage, newDate, newMessage)
+    ipcRenderer.invoke("db:updateReminder", oldDate, oldMessage, newDate, newMessage),
+  getTheme: () => ipcRenderer.invoke("db:getTheme"),
+  updateTheme: (theme) => ipcRenderer.invoke("db:updateTheme", theme),
 });
 
 contextBridge.exposeInMainWorld("notify", {
