@@ -8,9 +8,11 @@ class User {
 }
 
 class Reminder {
+    id;
     reminderTime;
     message;
     constructor(reminderTime, message) {
+        this.id = crypto.randomUUID();
         this.reminderTime = reminderTime;
         this.message = message;
     }

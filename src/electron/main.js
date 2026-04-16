@@ -1,6 +1,6 @@
 // @ts-nocheck
 
-import {app, BrowserWindow, ipcMain, Menu, Tray, Notification} from "electron"
+import { app, BrowserWindow, ipcMain, Menu, Tray, Notification } from "electron"
 import path from "node:path"
 import { fileURLToPath } from "node:url";
 const __filename = fileURLToPath(import.meta.url);
@@ -15,7 +15,11 @@ let tray = null;
 let win = null;
 
 function toggleWindow() {
-  if (!win) return;
+  if (!win || win.isDestroyed()) {
+    createWindow();
+    return;
+  }
+
   if (win.isVisible()) {
     win.hide();
   } else {
@@ -23,6 +27,12 @@ function toggleWindow() {
     win.focus();
   }
 }
+
+let isQuitting = false;
+
+app.on('before-quit', () => {
+  isQuitting = true;
+});
 
 function createWindow() {
   win = new BrowserWindow({
@@ -36,6 +46,13 @@ function createWindow() {
     },
   });
 
+  win.on('close', (event) => {
+    if (!isQuitting) {
+      event.preventDefault();
+      win.hide();
+    }
+  });
+
   if (isDev) {
     win.loadURL('http://localhost:5173');
   } else {
@@ -43,7 +60,7 @@ function createWindow() {
   }
 }
 
-app.whenReady().then(()=> {
+app.whenReady().then(() => {
   tray = new Tray(path.join(__dirname, '../../build/icon.png'));
   const contextMenu = Menu.buildFromTemplate([
     {

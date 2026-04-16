@@ -1,6 +1,10 @@
 <script>
     import { onMount } from "svelte";
-    import { sendNotification, cancelNotification, getPendingNotifications } from "$lib/notify/notify.js";
+    import {
+        sendNotification,
+        cancelNotification,
+        getPendingNotifications,
+    } from "$lib/notify/notify.js";
     import { deleteReminder } from "$lib/database/db.js";
 
     let { reminder, onRefetch } = $props();
@@ -8,15 +12,21 @@
     let isRunning = $state(false);
 
     onMount(async () => {
-        const tmprunning = await checkIfRunning()
-        isRunning = tmprunning
+        const tmprunning = await checkIfRunning();
+        isRunning = tmprunning;
     });
 
     async function checkIfRunning() {
-        const messages = await getPendingNotifications();
-        if (!messages || messages.length === 0) return false;
+        const result = await getPendingNotifications();
 
-        const found = messages.find(msg => msg.message === reminder.message);
+        const messages = result?.notifications || [];
+
+        if (messages.length === 0) return false;
+
+        const found = messages.find(
+            (msg) => msg.body === reminder.message,
+        );
+
         if (!found) return false;
 
         id = found.id;
@@ -25,14 +35,16 @@
 
     async function deleteReminderFromDB() {
         const confirmation = await confirm(
-            'Do you want to delete this reminder?', 
-            { title: 'Warning', kind: 'warning' }
+            "Do you want to delete this reminder?",
+            { title: "Warning", kind: "warning" },
         );
-
 
         if (confirmation) {
             await cancelNotify();
-            await deleteReminder(new Date(reminder.reminderTime), reminder.message);
+            await deleteReminder(
+                new Date(reminder.reminderTime),
+                reminder.message,
+            );
             onRefetch();
         }
     }
@@ -41,8 +53,8 @@
         if (id) {
             await cancelNotification(id);
             id = "";
-            const tmprunning = await checkIfRunning()
-            isRunning = tmprunning
+            const tmprunning = await checkIfRunning();
+            isRunning = tmprunning;
             onRefetch();
         }
     }
@@ -54,7 +66,7 @@
             const time = new Date(new Date(reminder.reminderTime));
             if (time - new Date() > 0 && !isNaN(time - new Date())) {
                 const tmpId = await sendNotification(time, reminder.message);
-                id = tmpId || "";  // if notify.js returns an id
+                id = tmpId || "";
                 isRunning = true;
             } else if (interactive) {
                 alert("Reminder time is in the past or invalid!");
@@ -65,14 +77,24 @@
 </script>
 
 <main>
-<div class="card bg-secondary text-white mt-3 mb-3">
-    <p class="card-header">{reminder.message}</p>
-    <div class="card-body">
-        <p>When: {new Date(new Date(reminder.reminderTime)).toLocaleString()}</p>
-        <p>Active: {isRunning ? "Yes" : "No"}</p>
-        <button onclick={deleteReminderFromDB} class="btn btn-danger">Delete</button>
-        <button onclick={cancelNotify} class="btn btn-warning">Cancel</button>
-        <button onclick={() => scheduleNotify(true)}  class="btn btn-primary">Start</button>
-    </div>
+    <div class="card bg-secondary text-white mt-3 mb-3">
+        <p class="card-header">{reminder.message}</p>
+        <div class="card-body">
+            <p>
+                When: {new Date(
+                    new Date(reminder.reminderTime),
+                ).toLocaleString()}
+            </p>
+            <p>Active: {isRunning ? "Yes" : "No"}</p>
+            <button onclick={deleteReminderFromDB} class="btn btn-danger"
+                >Delete</button
+            >
+            <button onclick={cancelNotify} class="btn btn-warning"
+                >Cancel</button
+            >
+            <button onclick={() => scheduleNotify(true)} class="btn btn-primary"
+                >Start</button
+            >
+        </div>
     </div>
 </main>
