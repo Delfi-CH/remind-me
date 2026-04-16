@@ -68,7 +68,7 @@
     <p>{reminder.message}</p>
     <p>When: {new Date(new Date(reminder.reminderTime)).toLocaleString()}</p>
     <p>Active: {isRunning ? "Yes" : "No"}</p>
-    <button onclick={deleteReminderFromDB}>Delete</button>
-    <button onclick={cancelNotify}>Cancel</button>
-    <button onclick={() => scheduleNotify(true)}>Start</button>
+    <button onclick={deleteReminderFromDB} class="btn btn-danger">Delete</button>
+    <button onclick={cancelNotify} class="btn btn-warning">Cancel</button>
+    <button onclick={() => scheduleNotify(true)}  class="btn btn-primary">Start</button>
 </main>

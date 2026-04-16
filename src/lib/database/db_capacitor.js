@@ -89,6 +89,7 @@ export async function initDB_Capacitor() {
 }
 
 export async function updateTheme_Capacitor(theme) {
+    console.log(theme)
     await Preferences.set({
         key: "theme",
         value: theme
@@ -96,7 +97,8 @@ export async function updateTheme_Capacitor(theme) {
 }
 
 export async function getTheme_Capacitor() {
-    return await Preferences.get({
+    const value = await Preferences.get({
         key: "theme"
     })
+    return value.value
 }

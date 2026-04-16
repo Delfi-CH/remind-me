@@ -5,15 +5,14 @@
     let { onSubmit } = $props()
 
     let day = $state()
-    let time = $state()
+
     let message = $state("")
     let status = $state()
 
     async function handleSubmit(event) {
         event.preventDefault()
-        const [year, month, datePart] = day.split("-");
-        const [hour, minute] = time.split(":");
-        const date = new Date(year, month - 1, datePart, hour, minute, 0);
+        console.log(new Date(day))
+        const date = new Date(day);
         try {
             await insertReminder(date, message)
             await sendNotification(date, message)
