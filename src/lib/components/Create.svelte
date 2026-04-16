@@ -24,8 +24,9 @@
     }
 </script>
 
-<main>
-    <form onsubmit={async (e) => await handleSubmit(e)}>
+<main class="card bg-success">
+    <p class="card-header">New Reminder</p>
+    <form onsubmit={async (e) => await handleSubmit(e)} class="card-body">
         <label for="day" class="form-label">Day & Time: <input type="datetime-local" class="hover form-control" id="day" bind:value={day} required></label>
         <label for="message" class="form-label">Message: <input type="text" id="message" bind:value={message} class="form-control" required></label>
         <button type="submit" class="btn btn-primary">Submit</button>

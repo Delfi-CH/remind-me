@@ -5,7 +5,6 @@ let theme = $state('cosmo');
 const themeMap = {
 	cosmo: 'https://cdn.jsdelivr.net/npm/bootswatch@5/dist/cosmo/bootstrap.min.css',
 	quartz: 'https://cdn.jsdelivr.net/npm/bootswatch@5/dist/quartz/bootstrap.min.css',
-	materia: 'https://cdn.jsdelivr.net/npm/bootswatch@5/dist/materia/bootstrap.min.css',
 	spacelab: 'https://cdn.jsdelivr.net/npm/bootswatch@5/dist/spacelab/bootstrap.min.css',
 };
 

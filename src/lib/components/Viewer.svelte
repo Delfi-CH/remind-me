@@ -65,10 +65,14 @@
 </script>
 
 <main>
-    <p>{reminder.message}</p>
-    <p>When: {new Date(new Date(reminder.reminderTime)).toLocaleString()}</p>
-    <p>Active: {isRunning ? "Yes" : "No"}</p>
-    <button onclick={deleteReminderFromDB} class="btn btn-danger">Delete</button>
-    <button onclick={cancelNotify} class="btn btn-warning">Cancel</button>
-    <button onclick={() => scheduleNotify(true)}  class="btn btn-primary">Start</button>
+<div class="card bg-secondary text-white mt-3 mb-3">
+    <p class="card-header">{reminder.message}</p>
+    <div class="card-body">
+        <p>When: {new Date(new Date(reminder.reminderTime)).toLocaleString()}</p>
+        <p>Active: {isRunning ? "Yes" : "No"}</p>
+        <button onclick={deleteReminderFromDB} class="btn btn-danger">Delete</button>
+        <button onclick={cancelNotify} class="btn btn-warning">Cancel</button>
+        <button onclick={() => scheduleNotify(true)}  class="btn btn-primary">Start</button>
+    </div>
+    </div>
 </main>
