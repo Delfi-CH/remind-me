@@ -2,7 +2,6 @@
     import { genUUID, getTheme } from "$lib/database/db";
     import { onMount } from "svelte";
     import { setTheme } from "$lib/theme.svelte";
-    import Sidebar from "$lib/components/Sidebar.svelte";
 
     let uuid = $state();
     let theme = $state("cosmo");
@@ -32,8 +31,7 @@
 </script>
 
 <div class="d-flex">
-    <Sidebar></Sidebar>
-    <main class="flex-fill px-4 py-3">
+    <main class="flex-fill px-4 py-3" style="padding-left: 1.5rem !important;">
         <div class="card bg-primary text-white mb-3">
             <h2 class="card-header">App Info</h2>
             <div class="card-body">
@@ -70,8 +68,13 @@
                     >
                         <option value="cosmo">Minimal</option>
                         <option value="spacelab">Classic</option>
+                        <option value="slate">Dark</option>
                         {#if showSecretTheme}
-                            <option value="quartz">Pink & Blue</option>
+                            <option value="quartz">Purple</option>
+                            <option value="mint">Mint</option>
+                            <option value="drawn">Drawn</option>
+                            <option value="lux">Fancy</option>
+                            <option value="liquid">Liquid Glassy</option>
                         {/if}
                     </select>
                 </label>

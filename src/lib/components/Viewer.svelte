@@ -7,11 +7,12 @@
     } from "$lib/notify/notify.js";
     import { deleteReminder } from "$lib/database/db.js";
 
-    let { reminder, onRefetch } = $props();
+    let { reminder, onRefetch, theme } = $props();
     let id = $state("");
     let isRunning = $state(false);
 
     onMount(async () => {
+        console.log(theme)
         const tmprunning = await checkIfRunning();
         isRunning = tmprunning;
     });
@@ -77,7 +78,7 @@
 </script>
 
 <main>
-    <div class="card bg-secondary text-white mt-3 mb-3">
+    <div class="card {theme == "lux" ? "bg-primary" : "bg-secondary"} {theme == "liquid" ? "text-black" : "text-white"} mt-3 mb-3 " >
         <p class="card-header">{reminder.message}</p>
         <div class="card-body">
             <p>
@@ -86,15 +87,37 @@
                 ).toLocaleString()}
             </p>
             <p>Active: {isRunning ? "Yes" : "No"}</p>
-            <button onclick={deleteReminderFromDB} class="btn btn-danger"
+            <div class="flexbox-direction">
+            <button onclick={deleteReminderFromDB} class="btn btn-danger form-item"
                 >Delete</button
             >
-            <button onclick={cancelNotify} class="btn btn-warning"
+            <button onclick={cancelNotify} class="btn btn-warning form-item"
                 >Cancel</button
             >
-            <button onclick={() => scheduleNotify(true)} class="btn btn-primary"
+            <button onclick={() => scheduleNotify(true)} class="btn btn-primary form-item"
                 >Start</button
             >
+            </div>
         </div>
     </div>
 </main>
+
+<style>
+    .flexbox-direction {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .form-item {
+        margin-left: 0.25rem;
+        margin-right: 0.25rem;
+        height: fit-content;
+    }
+
+    @media (min-width: 699px) {
+        .flexbox-direction {
+            flex-direction: row;
+        }
+
+    }
+</style>
