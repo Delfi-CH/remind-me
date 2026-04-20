@@ -24,12 +24,12 @@
     }
 </script>
 
-<main class="card bg-success">
+<main class="card bg-success text-white">
     <p class="card-header">New Reminder</p>
-    <form onsubmit={async (e) => await handleSubmit(e)} class="card-body">
-        <label for="day" class="form-label">Day & Time: <input type="datetime-local" class="hover form-control" id="day" bind:value={day} required></label>
-        <label for="message" class="form-label">Message: <input type="text" id="message" bind:value={message} class="form-control" required></label>
-        <button type="submit" class="btn btn-primary">Submit</button>
+    <form onsubmit={async (e) => await handleSubmit(e)} class="card-body flexbox-direction">
+        <label for="day" class="form-label form-item">Day & Time: <input type="datetime-local" class="hover form-control" id="day" bind:value={day} required></label>
+        <label for="message" class="form-label form-item">Message: <input type="text" id="message" bind:value={message} class="form-control" required></label>
+        <button type="submit" class="btn btn-primary form-item" style="margin-top: 1.5rem;">Create</button>
         <p>{status}</p>
     </form>
 </main>
@@ -37,5 +37,23 @@
 <style>
     .hover:hover {
         cursor: pointer;
+    }
+
+    .flexbox-direction {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .form-item {
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
+        height: fit-content;
+    }
+
+    @media (min-width: 699px) {
+        .flexbox-direction {
+            flex-direction: row;
+        }
+
     }
 </style>
