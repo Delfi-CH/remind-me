@@ -73,7 +73,6 @@
                             <option value="quartz">Purple</option>
                             <option value="mint">Mint</option>
                             <option value="drawn">Drawn</option>
-                            <option value="lux">Fancy</option>
                             <option value="liquid">Liquid Glassy</option>
                         {/if}
                     </select>
