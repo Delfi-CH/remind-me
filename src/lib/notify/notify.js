@@ -85,6 +85,11 @@ async function getPerms() {
     const { LocalNotifications } = await import('@capacitor/local-notifications')
     const perm = await LocalNotifications.checkPermissions()
 
+    const status = await LocalNotifications.checkExactNotificationSetting();
+    if (status.exact_alarm !== 'granted') {
+        await LocalNotifications.changeExactNotificationSetting();
+    }
+
     if (perm.display !== 'granted') {
         const perm2 = await LocalNotifications.requestPermissions()
 
