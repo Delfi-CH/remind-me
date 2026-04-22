@@ -14,6 +14,7 @@
 		"lint": "eslint .",
 		"electron": "electron .",
 		"electron:dev": "vite build && concurrently \"vite dev\" \"wait-on http://localhost:5173 && electron .\"",
+		"electron:build": "vite build && electron-builder -l tar.xz -w nsis",
 		"electron:dist": "vite build && electron-builder",
 		"android:dev": "vite build && cap sync android && cap run android",
 		"android:build": "vite build && cap sync android && cd android && ./gradlew build && cp app/build/outputs/apk/debug/app-debug.apk ../remind-me.apk",
