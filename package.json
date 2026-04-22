@@ -9,9 +9,9 @@
 	"scripts": {
 		"prepare": "svelte-kit sync || echo ''",
 		"lint": "eslint .",
-		"electron:dev": "vite build && concurrently \"vite dev\" \"wait-on http://localhost:5173 && electron .\"",
-		"electron:build": "vite build && electron-builder -l tar.xz -w nsis",
-		"electron:dist": "vite build && electron-builder",
+		"electron:dev": "electron-rebuild && vite build && concurrently \"vite dev\" \"wait-on http://localhost:5173 && electron .\"",
+		"electron:build": "electron-rebuild && vite build && electron-builder -l tar.xz -w nsis",
+		"electron:dist": "electron-rebuild && vite build && electron-builder",
 		"android:dev": "vite build && cap sync android && cap run android",
 		"android:build": "vite build && cap sync android && cd android && ./gradlew build && cp app/build/outputs/apk/debug/app-debug.apk ../remind-me.apk",
 		"android:dist": "vite build && cap sync android && cap build android --androidreleasetype APK",
