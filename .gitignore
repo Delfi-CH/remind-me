@@ -30,3 +30,5 @@ dist
 *.apk
 *.exe
 *.tar*
+
+data/

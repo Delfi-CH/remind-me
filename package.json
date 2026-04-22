@@ -7,18 +7,16 @@
 	"type": "module",
 	"main": "src/electron/main.js",
 	"scripts": {
-		"dev": "vite dev",
-		"build": "vite build",
-		"preview": "vite preview",
 		"prepare": "svelte-kit sync || echo ''",
 		"lint": "eslint .",
-		"electron": "electron .",
 		"electron:dev": "vite build && concurrently \"vite dev\" \"wait-on http://localhost:5173 && electron .\"",
 		"electron:build": "vite build && electron-builder -l tar.xz -w nsis",
 		"electron:dist": "vite build && electron-builder",
 		"android:dev": "vite build && cap sync android && cap run android",
 		"android:build": "vite build && cap sync android && cd android && ./gradlew build && cp app/build/outputs/apk/debug/app-debug.apk ../remind-me.apk",
 		"android:dist": "vite build && cap sync android && cap build android --androidreleasetype APK",
+		"backend:dev": "nodemon src/backend/main.js",
+		"backend:prod": "node src/backend/main.js",
 		"postinstall": "electron-rebuild"
 	},
 	"build": {
@@ -207,6 +205,8 @@
 		"better-sqlite3": "^12.8.0",
 		"bootstrap": "^5.3.8",
 		"bootswatch": "^5.3.8",
-		"is-electron": "^2.2.2"
+		"express": "^5.2.1",
+		"is-electron": "^2.2.2",
+		"nodemon": "^3.1.14"
 	}
 }
