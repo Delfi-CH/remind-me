@@ -3,3 +3,10 @@ onlyBuiltDependencies:
   - electron
   - electron-winstaller
   - esbuild
+
+overrides:
+  '@sveltejs/kit@<=2.57.0': '>=2.57.1'
+  '@xmldom/xmldom@<0.8.13': '>=0.8.13'
+  axios@>=1.0.0 <1.15.0: '>=1.15.0'
+  cookie@<0.7.0: '>=0.7.0'
+  follow-redirects@<=1.15.11: '>=1.16.0'
