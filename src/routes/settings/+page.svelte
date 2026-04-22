@@ -35,7 +35,8 @@
         <div class="card bg-primary text-white mb-3">
             <h2 class="card-header">App Info</h2>
             <div class="card-body">
-                <p>remind-me v0.0.1-dev</p>
+                <p>remind-me v0.8.0-debug</p>
+                <p><a href="https://github.com/Delfi-CH/remind-me">Source Code (GitHub)</a></p>
                 <p>
                     © 2026-2026 Delfi-CH <a
                         href="https://delfi.dev"

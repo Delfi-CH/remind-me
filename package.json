@@ -3,7 +3,7 @@
 	"private": true,
 	"description": "Minimal App to set reminders",
 	"author": {},
-	"version": "0.0.1",
+	"version": "0.8.0",
 	"type": "module",
 	"main": "src/electron/main.js",
 	"scripts": {
