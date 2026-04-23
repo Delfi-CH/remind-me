@@ -17,3 +17,12 @@ contextBridge.exposeInMainWorld("notify", {
     cancelNotification: (id) => ipcRenderer.invoke("notify:cancelNotification", id),
     getActiveNotifications: () => ipcRenderer.invoke("notify:getActiveNotifications")
 })
+
+contextBridge.exposeInMainWorld("sys", {
+  hostname: () => ipcRenderer.invoke("sys:hostname"),
+  arch: () => ipcRenderer.invoke("sys:arch"),
+  platform: () => ipcRenderer.invoke("sys:platform"),
+  type: () => ipcRenderer.invoke("sys:type"),
+  version: () => ipcRenderer.invoke("sys:version"),
+  linuxOsInfo: () => ipcRenderer.invoke("sys:linuxOsInfo")
+})

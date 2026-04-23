@@ -15,8 +15,8 @@
 		"android:dev": "vite build && cap sync android && cap run android",
 		"android:build": "vite build && cap sync android && cd android && ./gradlew build && cp app/build/outputs/apk/debug/app-debug.apk ../remind-me.apk",
 		"android:dist": "vite build && cap sync android && cap build android --androidreleasetype APK",
-		"backend:dev": "nodemon src/backend/main.js",
-		"backend:prod": "node src/backend/main.js",
+		"backend:dev": "node --watch --experimental-sqlite src/backend/main.js",
+		"backend:prod": "node --experimental-sqlite src/backend/main.js",
 		"postinstall": "electron-rebuild"
 	},
 	"build": {
@@ -200,6 +200,7 @@
 	"dependencies": {
 		"@capacitor/android": "^8.3.0",
 		"@capacitor/core": "^8.3.0",
+		"@capacitor/device": "^8.0.2",
 		"@capacitor/local-notifications": "^8.0.2",
 		"@capacitor/preferences": "^8.0.1",
 		"better-sqlite3": "^12.8.0",
@@ -207,6 +208,6 @@
 		"bootswatch": "^5.3.8",
 		"express": "^5.2.1",
 		"is-electron": "^2.2.2",
-		"nodemon": "^3.1.14"
+		"linux-os-info": "^2.0.0"
 	}
 }

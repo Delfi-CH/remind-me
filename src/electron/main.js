@@ -2,6 +2,8 @@
 
 import { app, BrowserWindow, ipcMain, Menu, Tray, Notification } from "electron"
 import path from "node:path"
+import os from "node:os"
+import { linuxOsInfo } from "../lib/system/linux-os-info_ESMODULE.js";
 import { fileURLToPath } from "node:url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -139,3 +141,10 @@ ipcMain.handle("notify:getActiveNotifications", () => {
   }
   return active;
 });
+
+ipcMain.handle("sys:hostname", () => {return os.hostname()})
+ipcMain.handle("sys:arch", () => { return os.arch()})
+ipcMain.handle("sys:platform", () => { return os.platform()})
+ipcMain.handle("sys:type", () => { return os.type()})
+ipcMain.handle("sys:version", () => {return os.version()})
+ipcMain.handle("sys:linuxOsInfo", () => {return linuxOsInfo()})

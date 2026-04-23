@@ -2,9 +2,11 @@
     import { genUUID, getTheme } from "$lib/database/db";
     import { onMount } from "svelte";
     import { setTheme } from "$lib/theme.svelte";
+    import { getDeviceInfo } from "$lib/system/device";
 
     let uuid = $state();
     let theme = $state("cosmo");
+    let device = $state({})
 
     let showSecretCounter = $state(0);
     let showSecretTheme = $derived(showSecretCounter >= 5 ? true : false);
@@ -12,9 +14,10 @@
     onMount(async () => {
         const tmpUUID = await genUUID();
         const tmpTheme = await getTheme();
+        const tmpDevice = await getDeviceInfo();
         theme = tmpTheme;
-        console.log(theme);
         uuid = tmpUUID;
+        device = tmpDevice;
         showSecretCounter = localStorage.getItem("secretCounter");
     });
 
@@ -53,6 +56,13 @@
                         >{uuid}</strong
                     >
                 </p>
+            </div>
+        </div>
+        <div class="card bg-primary text-white mt-3 mb-3">
+            <h2 class="card-header">Synchronisation</h2>
+            <div class="card-body">
+                <p>Current device: {device.name} ({device.os} {device.osVersion})</p>
+                <form></form>
             </div>
         </div>
         <div class="card bg-primary text-white mt-3 mb-3">
