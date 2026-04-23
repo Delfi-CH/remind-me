@@ -3,10 +3,13 @@
     import { onMount } from "svelte";
     import { setTheme } from "$lib/theme.svelte";
     import { getDeviceInfo } from "$lib/system/device";
+    import PrivacyPolicy from "$lib/components/PrivacyPolicy.svelte";
 
     let uuid = $state();
     let theme = $state("cosmo");
-    let device = $state({})
+    let device = $state({});
+    let showSyncPopup = $state(false);
+    let syncPopupAgreePrivacy = $state(false)
 
     let showSecretCounter = $state(0);
     let showSecretTheme = $derived(showSecretCounter >= 5 ? true : false);
@@ -31,6 +34,12 @@
         showSecretCounter++;
         localStorage.setItem("secretCounter", showSecretCounter);
     }
+
+    function updateSyncStatus(event) {
+        if (event.target.checked) {
+            showSyncPopup = true;
+        }
+    }
 </script>
 
 <div class="d-flex">
@@ -39,7 +48,11 @@
             <h2 class="card-header">App Info</h2>
             <div class="card-body">
                 <p>remind-me v0.8.0-debug</p>
-                <p><a href="https://github.com/Delfi-CH/remind-me">Source Code (GitHub)</a></p>
+                <p>
+                    <a href="https://github.com/Delfi-CH/remind-me"
+                        >Source Code (GitHub)</a
+                    >
+                </p>
                 <p>
                     © 2026-2026 Delfi-CH <a
                         href="https://delfi.dev"
@@ -48,7 +61,7 @@
                 </p>
             </div>
         </div>
-        <div class="card bg-primary text-white mt-3 mb-3">
+        <div class="card bg-info text-white mt-3 mb-3">
             <h2 class="card-header">User Info</h2>
             <div class="card-body">
                 <p>
@@ -58,14 +71,67 @@
                 </p>
             </div>
         </div>
-        <div class="card bg-primary text-white mt-3 mb-3">
+        <div class="card bg-warning text-white mt-3 mb-3">
             <h2 class="card-header">Synchronisation</h2>
             <div class="card-body">
-                <p>Current device: {device.name} ({device.os} {device.osVersion})</p>
-                <form></form>
+                <p>
+                    Current device: {device.name} ({device.os}
+                    {device.osVersion})
+                </p>
+                <div class="form-check form-switch">
+                    <label for="syncStatus">
+                        <input
+                            type="checkbox"
+                            id="syncStatus"
+                            class="form-check-input"
+                            onchange={updateSyncStatus}
+                        />
+                        Synchronisation</label
+                    >
+                </div>
             </div>
         </div>
-        <div class="card bg-primary text-white mt-3 mb-3">
+        {#if showSyncPopup}
+            <div
+                class="modal show d-block"
+                tabindex="-1"
+                style="background: rgba(0,0,0,0.5);"
+            >
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <h2>Enable Synchronisation</h2>
+                            <p>You are about to enable Synchronisation.</p>
+                            <p>Synchronisation allows you to synchronise your Reminders with multiple devices.</p>
+                            <p>To enable Synchronisation, you need to agree to our Privacy Policy (found underneath).</p>
+                            <div>
+                                <PrivacyPolicy></PrivacyPolicy>
+                                <label for="privacyPolicyAgree">
+                                    I have read and understood the Privacy Policy.
+                                    <input type="checkbox" id="privacyPolicyAgree" bind:checked={syncPopupAgreePrivacy}>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                        <button
+                                class="btn btn-danger"
+                                onclick={() => (showSyncPopup= false)}
+                                disabled={!syncPopupAgreePrivacy}
+                            >
+                                Enable Synchronisation
+                            </button>
+                            <button
+                                class="btn btn-secondary"
+                                onclick={() => (showSyncPopup = false)}
+                            >
+                                Leave Disabled
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {/if}
+        <div class="card bg-warning text-white mt-3 mb-3">
             <h2 class="card-header">Settings</h2>
             <div class="card-body">
                 <label for="themeSelect"
