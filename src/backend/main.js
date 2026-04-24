@@ -1,3 +1,4 @@
+import { initDB_Express } from "$lib/database/db_express";
 import express from "express";
 
 const app = express()
@@ -10,5 +11,5 @@ app.get("/api/remind-me/", (req, res) => {
 
 app.listen(port, "0.0.0.0", ()=>{
     console.log("remind-me server running on port " + port)
-
+    db = initDB_Express()
 })
