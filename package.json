@@ -15,7 +15,7 @@
 		"electron:build-windows": "electron-rebuild && vite build && electron-builder -w nsis",
 		"electron:dist": "electron-rebuild && vite build && electron-builder",
 		"android:dev": "vite build && cap sync android && cap run android",
-		"android:build": "vite build && cap sync android && cd android && ./gradlew build && cp app/build/outputs/apk/debug/app-debug.apk ../${productName}-${version}.apk",
+		"android:build": "vite build && cap sync android && cd android && ./gradlew build && cp app/build/outputs/apk/debug/app-debug.apk ../Remind Me-Android.apk",
 		"android:dist": "vite build && cap sync android && cap build android --androidreleasetype APK",
 		"backend:dev": "node --watch --experimental-sqlite src/backend/main.js",
 		"backend:prod": "node --experimental-sqlite src/backend/main.js",
