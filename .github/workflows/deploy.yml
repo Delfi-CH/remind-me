@@ -1,0 +1,94 @@
+name: Build & Release
+
+on:
+  push:
+    branches:
+      - deploy
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Build Electron (Linux)
+        if: matrix.os == 'ubuntu-latest'
+        run: npm run electron:build-linux
+
+      - name: Build Electron (Windows)
+        if: matrix.os == 'windows-latest'
+        run: npm run electron:build-windows
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-${{ matrix.os }}
+          path: dist/
+
+  android:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - uses: android-actions/setup-android@v3
+
+      - name: Build Android
+        run: npm run android:build
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: android
+          path: "*.apk"
+
+  release:
+    needs: [build, android]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            **/*.AppImage
+            **/*.deb
+            **/*.rpm
+            **/*.pacman
+            **/*.exe
+            **/*.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
