@@ -24,18 +24,23 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: npm
+          cache: pnpm
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
 
       - name: Install deps
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: Build Electron (Linux)
         if: matrix.os == 'ubuntu-latest'
-        run: npm run electron:build-linux
+        run: pnpm run electron:build-linux
 
       - name: Build Electron (Windows)
         if: matrix.os == 'windows-latest'
-        run: npm run electron:build-windows
+        run: pnpm run electron:build-windows
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
@@ -52,9 +57,14 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: npm
+          cache: pnpm
 
-      - run: npm ci
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - run: pnpm install --frozen-lockfile
 
       - uses: actions/setup-java@v4
         with:
@@ -64,7 +74,7 @@ jobs:
       - uses: android-actions/setup-android@v3
 
       - name: Build Android
-        run: npm run android:build
+        run: pnpm run android:build
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
