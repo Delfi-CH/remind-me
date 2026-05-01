@@ -102,5 +102,9 @@ jobs:
             **/*.pacman
             **/*.exe
             **/*.apk
+            tag_name: latest
+
+          name: Latest Build
+          prerelease: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
