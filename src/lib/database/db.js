@@ -81,3 +81,21 @@ export async function updateTheme(theme) {
     return await updateTheme_Capacitor(theme)
   }
 }
+
+export async function getSync() {
+  if (electron) {
+    return Boolean(window.db.getSync());
+  } else {
+    const { getSync_Capacitor } = await import("./db_capacitor.js");
+    return await getSync_Capacitor()
+  }
+}
+
+export async function updateSync(sync) {
+  if (electron) {
+    return window.db.updateSync(sync)
+  } else {
+    const { updateSync_Capacitor } = await import("./db_capacitor.js");
+    return await updateSync_Capacitor(sync)
+  }
+}

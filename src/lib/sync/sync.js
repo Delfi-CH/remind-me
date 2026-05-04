@@ -1,1 +1,28 @@
-// todo
+import axios from "axios"
+
+const backendUrl = "http://127.0.0.1:3000/api/remind-me"
+
+export async function createRemoteUser(uuid, device) {
+    const result = await axios.get(backendUrl + "/users/" + uuid, {
+        validateStatus: (status) => status === 404 || status === 200
+    })
+    if (result.status === 404) {
+        const result2 = await axios.post(backendUrl + "/signup", {
+            uuid: uuid
+        })
+        if (result2.status === 201) {
+            return true
+        }
+    } else if (result.status === 200) {
+        const result3 = await axios.post(backendUrl + "/users/" + uuid + "/device", {
+            device: device
+        })
+        return true
+    }
+    return false
+}
+
+export async function getDevices(uuid) {
+    const result = await axios.get(backendUrl + "/users/" + uuid)
+    return result.data[0].devices.map((x) => JSON.parse(x))
+}

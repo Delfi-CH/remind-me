@@ -1,15 +1,18 @@
 <script>
-    import { genUUID, getTheme } from "$lib/database/db";
+    import { genUUID, getSync, getTheme, updateSync } from "$lib/database/db";
     import { onMount } from "svelte";
     import { setTheme } from "$lib/theme.svelte";
     import { getDeviceInfo } from "$lib/system/device";
     import PrivacyPolicy from "$lib/components/PrivacyPolicy.svelte";
+    import { createRemoteUser, getDevices } from "$lib/sync/sync";
 
     let uuid = $state();
     let theme = $state("cosmo");
     let device = $state({});
     let showSyncPopup = $state(false);
     let syncPopupAgreePrivacy = $state(false)
+    let doSync = $state(false)
+    let yourDevices = $state([])
 
     let showSecretCounter = $state(0);
     let showSecretTheme = $derived(showSecretCounter >= 5 ? true : false);
@@ -18,9 +21,16 @@
         const tmpUUID = await genUUID();
         const tmpTheme = await getTheme();
         const tmpDevice = await getDeviceInfo();
+        const tmpSync = await getSync()
         theme = tmpTheme;
         uuid = tmpUUID;
         device = tmpDevice;
+        doSync = tmpSync;
+        
+        if (tmpSync) {
+            const yourTmpDevices = await getDevices($state.snapshot(uuid))
+            yourDevices = yourTmpDevices  
+        }
         showSecretCounter = localStorage.getItem("secretCounter");
     });
 
@@ -32,13 +42,19 @@
 
     async function updateSecret() {
         showSecretCounter++;
-        localStorage.setItem("secretCounter", showSecretCounter);
+        localStorage.setIem("secretCounter", showSecretCounter);
     }
 
     function updateSyncStatus(event) {
         if (event.target.checked) {
             showSyncPopup = true;
         }
+    }
+
+    async function enableSync() {
+        await createRemoteUser($state.snapshot(uuid), $state.snapshot(device))
+        const yourTmpDevices = await getDevices($state.snapshot(uuid))
+        yourDevices = yourTmpDevices
     }
 </script>
 
@@ -85,10 +101,20 @@
                             id="syncStatus"
                             class="form-check-input"
                             onchange={updateSyncStatus}
+                            bind:checked={doSync}
                         />
                         Synchronisation</label
                     >
                 </div>
+                
+                {#if doSync}
+                    <h4>Your Devices</h4>
+                    <ul>
+                    {#each yourDevices as device (device)}
+                        <li>{device.name} ({device.os})</li>
+                    {/each}
+                    </ul>
+                {/if}
             </div>
         </div>
         {#if showSyncPopup}
@@ -115,14 +141,21 @@
                         <div class="modal-footer">
                         <button
                                 class="btn btn-danger"
-                                onclick={() => (showSyncPopup= false)}
+                                onclick={async () => {
+                                    showSyncPopup = false
+                                    await enableSync()
+                                    await updateSync(true)
+                                }}
                                 disabled={!syncPopupAgreePrivacy}
                             >
                                 Enable Synchronisation
                             </button>
                             <button
                                 class="btn btn-secondary"
-                                onclick={() => (showSyncPopup = false)}
+                                onclick={() => {
+                                    showSyncPopup = false
+                                    doSync = false
+                                    }}
                             >
                                 Leave Disabled
                             </button>

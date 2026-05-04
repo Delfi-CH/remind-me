@@ -30,7 +30,8 @@ function initSchema_Electron(db) {
     db.prepare(`
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY,
-            uuid TEXT UNIQUE NOT NULL
+            uuid TEXT UNIQUE NOT NULL,
+            sync INTEGER
         )
     `).run();
 
@@ -51,7 +52,16 @@ function initSchema_Electron(db) {
         )
     `).run();
 
+    db.prepare(`
+        CREATE TABLE IF NOT EXISTS sync (
+            id INTEGER PRIMARY KEY,
+            sync INTEGER NOT NULL DEFAULT FALSE
+        )
+    `).run();
+
     db.prepare(`INSERT OR IGNORE INTO theme (id, themeName) VALUES (?, ?)`).run(0, "cosmo");
+    db.prepare(`INSERT OR IGNORE INTO sync (id, sync) VALUES (?, ?)`).run(0, 0);
+
 }
 
 export function genUUID_Electron(db) {
@@ -105,4 +115,17 @@ export function updateTheme_Electron(db, themeName) {
 
 export function getTheme_Electron(db) {
     return db.prepare("SELECT themeName FROM theme WHERE id = 0").get().themeName
+}
+
+export function updateSync_Electron(db, sync) {
+    const newSync = Number(sync)
+    db.prepare(`
+        INSERT INTO sync (id, sync)
+        VALUES (0, ?)
+        ON CONFLICT(id) DO UPDATE SET sync = FALSE
+    `).run(newSync);
+}
+
+export function getSync_Electron(db) {
+    return db.prepare("SELECT sync FROM sync WHERE id = 0").get().sync
 }

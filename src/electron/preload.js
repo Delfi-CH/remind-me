@@ -10,6 +10,8 @@ contextBridge.exposeInMainWorld("db", {
     ipcRenderer.invoke("db:updateReminder", oldDate, oldMessage, newDate, newMessage),
   getTheme: () => ipcRenderer.invoke("db:getTheme"),
   updateTheme: (theme) => ipcRenderer.invoke("db:updateTheme", theme),
+  getSync: () => ipcRenderer.invoke("db:getSync"),
+  updateSync: (sync) => ipcRenderer.invoke("db:updateSync", sync),
 });
 
 contextBridge.exposeInMainWorld("notify", {

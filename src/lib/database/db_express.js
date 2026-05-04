@@ -59,6 +59,10 @@ export async function addDevice_Express(uuid, device) {
         if (userId.length === 0) {
             return false
         } else {
+            const devices = (await pool.query("SELECT deviceString FROM devices WHERE userFK = $1", [userId[0].id])).rows
+            if (devices.some(d => d.devicestring === JSON.stringify(device))) {
+                return true
+            }
             const queryText = "INSERT INTO devices(deviceString, userFK) VALUES ($1, $2)"
             await pool.query(queryText, [device, userId[0].id])
             return true

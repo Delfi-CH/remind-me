@@ -88,10 +88,13 @@ export async function initDB_Capacitor() {
         key: "theme",
         value: "cosmo"
     })
+    await Preferences.set({
+        key: "sync",
+        value: false
+    })
 }
 
 export async function updateTheme_Capacitor(theme) {
-    console.log(theme)
     await Preferences.set({
         key: "theme",
         value: theme
@@ -103,4 +106,18 @@ export async function getTheme_Capacitor() {
         key: "theme"
     })
     return value.value
+}
+
+export async function getSync_Capacitor() {
+    const value = await Preferences.get({
+        key: "sync"
+    })
+    return value.value
+}
+
+export async function updateSync_Capacitor(sync) {
+    await Preferences.set({
+        key: "sync",
+        value: sync
+    })
 }

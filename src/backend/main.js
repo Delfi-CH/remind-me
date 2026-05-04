@@ -1,11 +1,13 @@
 import { pool, initDB_Express, createUser_Express, getUser_Express, addDevice_Express, deleteDevice_Express } from "../lib/database/db_express.js";
 import express from "express";
+import cors from "cors";
 
 const app = express()
 app.use(express.json())
+app.use(cors());
 const port = 3000;
 
-app.get("/api/remind-me/", (req, res) => {
+app.get("/api/remind-me", (req, res) => {
     res.status(200).send("hello, world")
 })
 
