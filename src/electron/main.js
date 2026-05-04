@@ -1,6 +1,7 @@
 // @ts-nocheck
 
 import { app, BrowserWindow, ipcMain, Menu, Tray, Notification } from "electron"
+import express from "express"
 import path from "node:path"
 import os from "node:os"
 import { linuxOsInfo } from "../lib/system/linux-os-info_ESMODULE.js";
@@ -36,7 +37,26 @@ app.on('before-quit', () => {
   isQuitting = true;
 });
 
-function createWindow() {
+function createFrontendHost() {
+  const expressApp = express();
+
+  const distPath = path.join(__dirname, "../../build");
+
+  expressApp.use(express.static(distPath));
+
+  expressApp.use((req, res) => {
+    res.sendFile(path.join(distPath, "index.html"));
+  });
+
+  const server = expressApp.listen(0, "127.0.0.1")
+  return new Promise((resolve) => {
+    server.on("listening", () => {
+      resolve(server);
+    });
+  });
+}
+
+function createWindow(port) {
   win = new BrowserWindow({
     width: 1000,
     height: 800,
@@ -58,11 +78,16 @@ function createWindow() {
   if (isDev) {
     win.loadURL('http://localhost:5173');
   } else {
-    win.loadFile(path.join(__dirname, '../../build/index.html'));
+    win.loadURL("http://127.0.0.1:" + port);
   }
 }
 
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
+  let port = 69;
+  if (!isDev) {
+    const server = await createFrontendHost()
+    port = server.address().port
+  }
   tray = new Tray(path.join(__dirname, '../../build/icon.png'));
   const contextMenu = Menu.buildFromTemplate([
     {
@@ -81,7 +106,7 @@ app.whenReady().then(() => {
     toggleWindow();
   });
   db = initDB_Electron();
-  createWindow();
+  createWindow(port);
 });
 
 app.on('window-all-closed', (e) => {

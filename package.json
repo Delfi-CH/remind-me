@@ -39,7 +39,8 @@
 			"!**/test/**",
 			"!**/*.md",
 			"src/electron/**/*",
-			"src/**/**/**"
+			"src/**/**/**",
+			"build/**/**/**"
 		],
 		"asar": true,
 		"asarUnpack": [
