@@ -19,8 +19,8 @@
 		"android:build": "vite build && cap sync android && cd android && ./gradlew build && cp app/build/outputs/apk/debug/app-debug.apk ../remind_me-android.apk",
 		"android:dist": "vite build && cap sync android && cap build android --androidreleasetype APK",
 		"android:clean": "rm -rf build && cd android && ./gradlew clean",
-		"backend:dev": "node --watch --experimental-sqlite src/backend/main.js",
-		"backend:prod": "node --experimental-sqlite src/backend/main.js",
+		"backend:dev": "node --watch src/backend/main.js",
+		"backend:prod": "node src/backend/main.js",
 		"postinstall": "electron-rebuild"
 	},
 	"build": {
@@ -213,6 +213,7 @@
 		"bootswatch": "^5.3.8",
 		"express": "^5.2.1",
 		"is-electron": "^2.2.2",
-		"linux-os-info": "^2.0.0"
+		"linux-os-info": "^2.0.0",
+		"pg": "^8.20.0"
 	}
 }
