@@ -1,6 +1,6 @@
 <script>
     import { genUUID, getSync, getTheme, updateSync } from "$lib/database/db";
-    import { onMount } from "svelte";
+    import { onMount, onDestroy } from "svelte";
     import { setTheme } from "$lib/theme.svelte";
     import { getDeviceInfo } from "$lib/system/device";
     import PrivacyPolicy from "$lib/components/PrivacyPolicy.svelte";
@@ -57,6 +57,20 @@
         const yourTmpDevices = await getDevices($state.snapshot(uuid))
         yourDevices = yourTmpDevices
     }
+
+    function handleKeydown(e) {
+        if (e.key === 'Escape') {
+            showPrivacyPopup = false;
+        }
+    }
+
+    onMount(() => {
+        window.addEventListener('keydown', handleKeydown);
+    });
+
+    onDestroy(() => {
+        window.removeEventListener('keydown', handleKeydown);
+    });
 </script>
 
 <div class="d-flex">
