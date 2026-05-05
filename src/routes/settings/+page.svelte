@@ -133,7 +133,7 @@
                             <div>
                                 <PrivacyPolicy></PrivacyPolicy>
                                 <label for="privacyPolicyAgree">
-                                    I have read and understood the Privacy Policy.
+                                    I have read and understood the Privacy Policy and I agree to its terms..
                                     <input type="checkbox" id="privacyPolicyAgree" bind:checked={syncPopupAgreePrivacy}>
                                 </label>
                             </div>
