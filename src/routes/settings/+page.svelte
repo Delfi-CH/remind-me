@@ -22,18 +22,25 @@
         const tmpUUID = await genUUID();
         const tmpTheme = await getTheme();
         const tmpDevice = await getDeviceInfo();
-        const tmpSync = await getSync()
         theme = tmpTheme;
         uuid = tmpUUID;
         device = tmpDevice;
+        showSecretCounter = localStorage.getItem("secretCounter");
+        if (tmpTheme !== "cosmo" || tmpTheme !== "spacelab" || tmpTheme !== "slate") {
+            showSecretCounter = 69
+            showSecretTheme = true
+            updateSecret()
+        }
+    });
+
+    onMount(async () => {
+        const tmpSync = await getSync()
         doSync = tmpSync;
-        
         if (tmpSync) {
             const yourTmpDevices = await getDevices($state.snapshot(uuid))
             yourDevices = yourTmpDevices  
         }
-        showSecretCounter = localStorage.getItem("secretCounter");
-    });
+    })
 
     async function handleChange(event) {
         let tmpTheme = event.target.value;
@@ -43,7 +50,7 @@
 
     async function updateSecret() {
         showSecretCounter++;
-        localStorage.setIem("secretCounter", showSecretCounter);
+        localStorage.setItem("secretCounter", showSecretCounter);
     }
 
     function updateSyncStatus(event) {
@@ -80,7 +87,7 @@
             <div class="card-body">
                 <p>remind-me v0.8.0-debug</p>
                 <p>
-                    <a href="https://github.com/Delfi-CH/remind-me"
+                    <a href="https://github.com/Delfi-CH/remind-me" class="text-white"
                         >Source Code (GitHub)</a
                     >
                 </p>
