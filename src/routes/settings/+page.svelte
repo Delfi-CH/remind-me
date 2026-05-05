@@ -10,6 +10,7 @@
     let theme = $state("cosmo");
     let device = $state({});
     let showSyncPopup = $state(false);
+    let showPrivacyPopup = $state(false);
     let syncPopupAgreePrivacy = $state(false)
     let doSync = $state(false)
     let yourDevices = $state([])
@@ -133,7 +134,7 @@
                             <div>
                                 <PrivacyPolicy></PrivacyPolicy>
                                 <label for="privacyPolicyAgree">
-                                    I have read and understood the Privacy Policy and I agree to its terms..
+                                    I have read and understood the Privacy Policy and I agree to its terms.
                                     <input type="checkbox" id="privacyPolicyAgree" bind:checked={syncPopupAgreePrivacy}>
                                 </label>
                             </div>
@@ -187,6 +188,39 @@
                         {/if}
                     </select>
                 </label>
+            </div>
+        </div>
+        <div class="card bg-primary text-white mb-3">
+            <h2 class="card-header">About us</h2>
+            <div class="card-body">
+                <p>remind-me is developed by Delfi-CH <a href="https://delfi.dev" class="text-white">(https://delfi.dev)</a></p>
+                <p>If you have any questions or concerns about our Service, please send an E-Mail to <strong>remind-me@delfi.dev</strong></p>
+                <input type="button" onclick={()=> showPrivacyPopup = true} value="Privacy Policy">
+                {#if showPrivacyPopup}
+                    <div
+                        class="modal show d-block"
+                        tabindex="-1"
+                        style="background: rgba(0,0,0,0.5);"
+                    >
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    <PrivacyPolicy></PrivacyPolicy>
+                                </div>
+                                <div class="modal-footer">
+                                    <button
+                                        class="btn btn-secondary"
+                                        onclick={() => {
+                                            showPrivacyPopup = false
+                                        }}
+                                    >
+                                    Close
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {/if}
             </div>
         </div>
     </main>
