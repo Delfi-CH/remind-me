@@ -16,7 +16,7 @@ export function initDB_Electron() {
 }
 
 function loadDB_Electron() {
-    const dir = path.join(os.homedir(), ".remind-me");
+    const dir = os.platform() == "linux" ? path.join(os.homedir(), ".local/share/remind-me") : path.join(os.homedir() + ".remind-me");
 
     if (!fs.existsSync(dir)) {
         fs.mkdirSync(dir, { recursive: true });
