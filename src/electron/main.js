@@ -4,7 +4,7 @@ import { app, BrowserWindow, ipcMain, Menu, Tray, Notification } from "electron"
 import express from "express"
 import path from "node:path"
 import os from "node:os"
-import { linuxOsInfo } from "../lib/system/linux-os-info_ESMODULE.js";
+import { linuxOsInfo } from "@delfi-ch/linux-os-info-esmodule";
 import { fileURLToPath } from "node:url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

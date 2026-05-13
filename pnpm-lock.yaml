@@ -30,6 +30,9 @@ importers:
       '@capacitor/preferences':
         specifier: ^8.0.1
         version: 8.0.1(@capacitor/core@8.3.1)
+      '@delfi-ch/linux-os-info-esmodule':
+        specifier: ^2.0.2
+        version: 2.0.2
       axios:
         specifier: ^1.16.0
         version: 1.16.0
@@ -142,6 +145,9 @@ packages:
     resolution: {integrity: sha512-T6no3ebi79XJCk91U3Jp/liJUwgBdvHR+s6vhvPkPxSuch7z3zx5Rv1bdWM6sWruNx+pViuEGqZvbfCdyBvcHQ==}
     peerDependencies:
       '@capacitor/core': '>=8.0.0'
+
+  '@delfi-ch/linux-os-info-esmodule@2.0.2':
+    resolution: {integrity: sha512-e7Ak+WKxfehZAdG2sjYZPckhDpqp3uLBCIciT5dOMR+Z60ZWbtX9UWOJDUXgJF7NE3m6TN0iFj3irFbaON3JpQ==}
 
   '@develar/schema-utils@2.6.5':
     resolution: {integrity: sha512-0cp4PsWQ/9avqTVMCtZ+GirikIA36ikvjtHweU4/j8yLtgObI0+JUPhYFScgwlteveGB1rt3Cm8UhN04XayDig==}
@@ -2447,6 +2453,8 @@ snapshots:
   '@capacitor/preferences@8.0.1(@capacitor/core@8.3.1)':
     dependencies:
       '@capacitor/core': 8.3.1
+
+  '@delfi-ch/linux-os-info-esmodule@2.0.2': {}
 
   '@develar/schema-utils@2.6.5':
     dependencies:

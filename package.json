@@ -208,6 +208,7 @@
 		"@capacitor/device": "^8.0.2",
 		"@capacitor/local-notifications": "^8.0.2",
 		"@capacitor/preferences": "^8.0.1",
+		"@delfi-ch/linux-os-info-esmodule": "^2.0.2",
 		"axios": "^1.16.0",
 		"better-sqlite3": "^12.8.0",
 		"bootstrap": "^5.3.8",
