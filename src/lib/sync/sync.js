@@ -45,6 +45,7 @@ export async function registerSyncPin(syncPin) {
     try {
         const result = await axios.post(backendUrl + "/pins/"+syncPin+"/login");
         console.log(result.data.uuid)
+        return result.data.uuid
     } catch (e) {
         console.error("could not validate sync pin: "+e)
         return false
@@ -53,7 +54,7 @@ export async function registerSyncPin(syncPin) {
 
 export async function addDevice(uuid, device) {
     try {
-        await axios.post(backendUrl + "/users"+uuid+"/device", {
+        await axios.post(backendUrl + "/users/"+uuid+"/device", {
             device: device
         })
         return true

@@ -30,22 +30,15 @@
         showSecretCounter = Number(localStorage.getItem("secretCounter") || 0);
         if (tmpTheme !== "cosmo" && tmpTheme !== "spacelab" && tmpTheme !== "slate") {
             showSecretCounter = 69
-            showSecretTheme = true
             updateSecret()
         }
-    });
-
-    onMount(async () => {
-        const tmpSync = await getSync();
+                const tmpSync = await getSync();
         doSync = tmpSync;
-        const tmpUUID = await genUUID();
-        uuid = tmpUUID
         if (tmpSync) {
-            const yourTmpDevices = await getDevices($state.snapshot(uuid))
+            const yourTmpDevices = await getDevices(uuid)
             yourDevices = yourTmpDevices  
         }
-    })
-
+    });
     async function handleChange(event) {
         let tmpTheme = event.target.value;
         theme = tmpTheme;
@@ -66,8 +59,8 @@
     async function enableSync() {
         const tmpUUID = await genUUID();
         uuid = tmpUUID
-        await createRemoteUser($state.snapshot(uuid), $state.snapshot(device))
-        const yourTmpDevices = await getDevices($state.snapshot(uuid))
+        await createRemoteUser(uuid, device)
+        const yourTmpDevices = await getDevices(uuid)
         yourDevices = yourTmpDevices
     }
 
@@ -165,7 +158,7 @@
                         const tmpUUID = await registerSyncPin(syncPin)
                         uuid = tmpUUID
                         await addDevice(uuid, device)
-                        const yourTmpDevices = await getDevices($state.snapshot(uuid))
+                        const yourTmpDevices = await getDevices(uuid)
                         yourDevices = yourTmpDevices
                     }}>
                         <input type="number" id="generatedSyncPin" class="form-control" bind:value={syncPin} min="0" max="65535"/>
