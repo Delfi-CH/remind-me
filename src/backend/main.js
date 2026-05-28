@@ -81,6 +81,7 @@ app.post("/api/remind-me/pins/:pin/login", async (req, res)=> {
     const uuid = await validateSyncPin_Express(syncPin)
     if (uuid === 0) {
         res.sendStatus(404)
+        return
     }
     res.send({uuid: uuid})
 })

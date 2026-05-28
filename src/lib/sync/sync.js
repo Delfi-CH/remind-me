@@ -1,6 +1,6 @@
 import axios from "axios"
 
-const backendUrl = "http://127.0.0.1:3000/api/remind-me"
+const backendUrl = "https://api-remind-me.delfi.dev/api/remind-me"
 
 export async function createRemoteUser(uuid, device) {
     const result = await axios.get(backendUrl + "/users/" + uuid, {
