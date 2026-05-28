@@ -141,7 +141,7 @@ export async function generateSyncCode_Express(uuid) {
 
 export async function deleteOldSyncCodes_Express() {
     try {
-        await pool.query("DELETE from syncPins WHERE createdAt <= NOW() - INTERVAL '15 Minutes'")
+        await pool.query("DELETE from syncPins WHERE createdAt <= NOW() - INTERVAL '15 minutes'")
     } catch (e) {
         console.error("Could not delete old sync codes: " + e)
     }

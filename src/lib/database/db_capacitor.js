@@ -35,6 +35,13 @@ export async function genUUID_Capacitor() {
     return user;
 }
 
+export async function setUUID_Capacitor(uuid) {
+    await Preferences.set({
+        key: "user",
+        value: JSON.stringify(new User(uuid))
+    })
+}
+
 export async function insertReminder_Capacitor(reminderTime, message) {
     const reminders = await getAllReminders_Capacitor();
     reminders.push(new Reminder(reminderTime.toISOString(), message));

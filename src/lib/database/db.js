@@ -19,6 +19,15 @@ export async function genUUID() {
   }
 }
 
+export async function setUUID(uuid) {
+  if (electron) {
+    return window.db.setUUID(uuid);
+  } else {
+    const { setUUID_Capacitor } = await import("./db_capacitor.js");
+    return await setUUID_Capacitor(uuid);
+  }
+}
+
 export async function getAllReminders() {
   if (electron) {
     return window.db.getAllReminders();

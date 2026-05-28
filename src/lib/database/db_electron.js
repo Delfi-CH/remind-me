@@ -79,6 +79,14 @@ export function genUUID_Electron(db) {
     return uuid;
 }
 
+export function setUUID_Electron(db, uuid) {
+    db.prepare("DELETE FROM users WHERE id = 0").run();
+    db.prepare(`    
+        INSERT INTO users (id, uuid)
+        VALUES (0, ?)
+    `).run(uuid)   
+}
+
 export function getAllReminders_Electron(db) {
     return db.prepare("SELECT * FROM reminders").all();
 }

@@ -8,7 +8,7 @@ import linuxOsInfo from "@delfi-ch/linux-os-info-esmodule";
 import { fileURLToPath } from "node:url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-import { initDB_Electron, genUUID_Electron, getAllReminders_Electron, getSpecificReminder_Electron, insertReminder_Electron, deleteReminder_Electron, updateReminder_Electron, getTheme_Electron, updateTheme_Electron, getSync_Electron, updateSync_Electron } from "../lib/database/db_electron.js";
+import { initDB_Electron, genUUID_Electron, getAllReminders_Electron, getSpecificReminder_Electron, insertReminder_Electron, deleteReminder_Electron, updateReminder_Electron, getTheme_Electron, updateTheme_Electron, getSync_Electron, updateSync_Electron, setUUID_Electron } from "../lib/database/db_electron.js";
 
 let db;
 
@@ -140,6 +140,7 @@ function cancelNotification(id) {
   return false;
 }
 ipcMain.handle("db:genUUID", () => genUUID_Electron(db));
+ipcMain.handle("db:setUUID", (uuid) => setUUID_Electron(db, uuid));
 ipcMain.handle("db:getAllReminders", () => getAllReminders_Electron(db));
 ipcMain.handle("db:getSpecificReminder", (event, date, message) => getSpecificReminder_Electron(db, new Date(date), message));
 ipcMain.handle("db:insertReminder", (event, date, message) => insertReminder_Electron(db, new Date(date), message));

@@ -87,6 +87,7 @@ app.post("/api/remind-me/pins/:pin/login", async (req, res)=> {
 })
 
 cron.schedule("* * * * *", async ()=> {
+    console.log("Deleting old Sync Pins")
     await deleteOldSyncCodes_Express()
 })
 

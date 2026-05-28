@@ -1,5 +1,5 @@
 <script>
-    import { genUUID, getSync, getTheme, updateSync } from "$lib/database/db";
+    import { genUUID, getSync, getTheme, updateSync, setUUID } from "$lib/database/db";
     import { onMount, onDestroy } from "svelte";
     import { setTheme } from "$lib/theme.svelte";
     import { getDeviceInfo } from "$lib/system/device";
@@ -32,7 +32,7 @@
             showSecretCounter = 69
             updateSecret()
         }
-                const tmpSync = await getSync();
+        const tmpSync = await getSync();
         doSync = tmpSync;
         if (tmpSync) {
             const yourTmpDevices = await getDevices(uuid)
@@ -157,6 +157,7 @@
                         e.preventDefault()
                         const tmpUUID = await registerSyncPin(syncPin)
                         uuid = tmpUUID
+                        await setUUID(uuid)
                         await addDevice(uuid, device)
                         const yourTmpDevices = await getDevices(uuid)
                         yourDevices = yourTmpDevices

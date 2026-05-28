@@ -2,6 +2,7 @@ const { contextBridge, ipcRenderer } = require("electron");
 
 contextBridge.exposeInMainWorld("db", {
   genUUID: () => ipcRenderer.invoke("db:genUUID"),
+  setUUID: (uuid) => ipcRenderer.invoke("db:setUUID", uuid),
   getAllReminders: () => ipcRenderer.invoke("db:getAllReminders"),
   getSpecificReminder: (date, message) => ipcRenderer.invoke("db:getSpecificReminder", date, message),
   insertReminder: (date, message) => ipcRenderer.invoke("db:insertReminder", date, message),
