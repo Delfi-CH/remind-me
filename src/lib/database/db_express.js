@@ -146,3 +146,14 @@ export async function deleteOldSyncCodes_Express() {
         console.error("Could not delete old sync codes: " + e)
     }
 }
+
+export async function validateSyncPin_Express(syncPin) {
+    try {
+        const res = await pool.query("SELECT syncPins.userFK FROM syncPins WHERE syncPin = $1", [syncPin])
+        const res2 = await pool.query("SELECT users.uuid FROM users WHERE id = $1", [res.rows[0].userfk])
+        return res2.rows[0].uuid
+    } catch (e) {
+        console.error("Invalid sync pin: " + e)
+        return 0
+    }
+}

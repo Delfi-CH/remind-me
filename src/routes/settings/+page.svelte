@@ -4,7 +4,7 @@
     import { setTheme } from "$lib/theme.svelte";
     import { getDeviceInfo } from "$lib/system/device";
     import PrivacyPolicy from "$lib/components/PrivacyPolicy.svelte";
-    import { createRemoteUser, generateSyncPin, getDevices } from "$lib/sync/sync";
+    import { addDevice, createRemoteUser, generateSyncPin, getDevices, registerSyncPin } from "$lib/sync/sync";
 
     let uuid = $state();
     let theme = $state("cosmo");
@@ -14,7 +14,8 @@
     let syncPopupAgreePrivacy = $state(false)
     let doSync = $state(false)
     let yourDevices = $state([])
-    let syncPin = $state(false)
+    let generatedSyncPin = $state(false)
+    let syncPin = $state(0)
 
     let showSecretCounter = $state(0);
     let showSecretTheme = $derived(showSecretCounter >= 5 ? true : false);
@@ -76,7 +77,7 @@
         }
     }
 
-    async function createSyncPin() {
+    async function creategeneratedSyncPin() {
         const tmpUUID = await genUUID();
         uuid = tmpUUID
         const res = await generateSyncPin(uuid)
@@ -84,7 +85,7 @@
             alert("Sync Pin already exists");
             return
         }
-        syncPin = res.pin
+        generatedSyncPin = res.pin
     }
 
     onMount(() => {
@@ -154,10 +155,22 @@
                     </ul>
                     <h4>Pair Device</h4>
                     <button onclick={async ()=>{
-                        await createSyncPin()
+                        await creategeneratedSyncPin()
                     }} class="btn btn-danger">Create PIN</button>
-                    {#if syncPin !== false}<p>Your PIN: {syncPin}</p>{/if}
-                    <label for="syncPin">Enter PIN</label><input type="number" id="syncPin">
+                    {#if generatedSyncPin !== false}<p>Your PIN: {generatedSyncPin}</p>{/if}
+                    <br/>
+                    <label for="generatedSyncPin" class="form-label">Enter PIN</label>
+                    <form class="d-flex" onsubmit={async (e)=>{
+                        e.preventDefault()
+                        const tmpUUID = await registerSyncPin(syncPin)
+                        uuid = tmpUUID
+                        await addDevice(uuid, device)
+                        const yourTmpDevices = await getDevices($state.snapshot(uuid))
+                        yourDevices = yourTmpDevices
+                    }}>
+                        <input type="number" id="generatedSyncPin" class="form-control" bind:value={syncPin} min="0" max="65535"/>
+                        <button class="btn btn-primary" type="submit">Sync!</button> 
+                    </form>
                 {/if}
             </div>
         </div>

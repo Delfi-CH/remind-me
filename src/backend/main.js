@@ -1,4 +1,4 @@
-import { pool, initDB_Express, createUser_Express, getUser_Express, addDevice_Express, deleteDevice_Express, generateSyncCode_Express, deleteOldSyncCodes_Express } from "../lib/database/db_express.js";
+import { pool, initDB_Express, createUser_Express, getUser_Express, addDevice_Express, deleteDevice_Express, generateSyncCode_Express, deleteOldSyncCodes_Express, validateSyncPin_Express } from "../lib/database/db_express.js";
 import express from "express";
 import cors from "cors";
 import cron from "node-cron"
@@ -72,6 +72,17 @@ app.post("/api/remind-me/users/:uuid/sync", async (req, res) => {
         res.status(409).send("PIN already exists for your user")
     }
     res.status(201).send({pin: pin})
+})
+
+// curl -X POST http://localhost:3000/api/remind-me/users/69/syncx  
+
+app.post("/api/remind-me/pins/:pin/login", async (req, res)=> {
+    const syncPin = req.params.pin
+    const uuid = await validateSyncPin_Express(syncPin)
+    if (uuid === 0) {
+        res.sendStatus(404)
+    }
+    res.send({uuid: uuid})
 })
 
 cron.schedule("* * * * *", async ()=> {
