@@ -36,6 +36,15 @@ export async function initDB_Express() {
             );
         `);
 
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS syncPins (
+                id SERIAL PRIMARY KEY,
+                userFK INTEGER UNIQUE NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+                syncPin INTEGER NOT NULL,
+                createdAt TIMESTAMP NOT NULL DEFAULT NOW()
+            );
+        `);
+
     } catch (err) {
         console.error("DB init failed:", err);
         throw err;
@@ -109,4 +118,31 @@ export async function getUser_Express(uuid) {
         console.error("Select failed: " +e)
         return false
     } 
+}
+
+export async function generateSyncCode_Express(uuid) {
+    try {
+        const rand = new Uint16Array(1)
+        crypto.getRandomValues(rand)
+        const pin = rand[0]
+        const res = await pool.query("SELECT users.id FROM users WHERE users.uuid = $1", [uuid])
+        const userId = res.rows[0].id
+        const queryText = `
+            INSERT INTO syncPins(userFK, syncPin) VALUES ($1, $2)
+        `
+        await pool.query(queryText, [userId, pin])
+        return pin
+
+    } catch (e) {
+        console.error("Pin generation failed: " +e)
+        return 0
+    }
+}
+
+export async function deleteOldSyncCodes_Express() {
+    try {
+        await pool.query("DELETE from syncPins WHERE createdAt <= NOW() - INTERVAL '15 Minutes'")
+    } catch (e) {
+        console.error("Could not delete old sync codes: " + e)
+    }
 }

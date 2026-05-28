@@ -1,6 +1,7 @@
-import { pool, initDB_Express, createUser_Express, getUser_Express, addDevice_Express, deleteDevice_Express } from "../lib/database/db_express.js";
+import { pool, initDB_Express, createUser_Express, getUser_Express, addDevice_Express, deleteDevice_Express, generateSyncCode_Express, deleteOldSyncCodes_Express } from "../lib/database/db_express.js";
 import express from "express";
 import cors from "cors";
+import cron from "node-cron"
 
 const app = express()
 app.use(express.json())
@@ -64,6 +65,18 @@ app.post("/api/remind-me/users/:uuid/device/delete", async (req,res)=> {
 })
 // curl -X POST http://localhost:3000/api/remind-me/users/69/device/delete -H "Content-Type: application/json" -d '{"device":"computer"}'
 
+app.post("/api/remind-me/users/:uuid/sync", async (req, res) => {
+    const uuid = req.params.uuid
+    const pin = await generateSyncCode_Express(uuid)
+    if (pin === 0) {
+        res.status(409).send("PIN already exists for your user")
+    }
+    res.status(201).send({pin: pin})
+})
+
+cron.schedule("* * * * *", async ()=> {
+    await deleteOldSyncCodes_Express()
+})
 
 app.listen(port, "0.0.0.0", async ()=>{
     console.log("remind-me server running on port " + port)

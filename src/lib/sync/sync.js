@@ -26,3 +26,17 @@ export async function getDevices(uuid) {
     const result = await axios.get(backendUrl + "/users/" + uuid)
     return result.data[0].devices.map((x) => JSON.parse(x))
 }
+
+export async function generateSyncPin(uuid) {
+    try {
+        const result = await axios.post(
+            backendUrl + "/users/" + uuid + "/sync"
+        );
+
+        return result.data;
+
+    } catch (e) {
+        console.error("Could not generate sync pin: " + e)
+        return false   
+    }
+}

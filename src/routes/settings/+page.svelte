@@ -4,7 +4,7 @@
     import { setTheme } from "$lib/theme.svelte";
     import { getDeviceInfo } from "$lib/system/device";
     import PrivacyPolicy from "$lib/components/PrivacyPolicy.svelte";
-    import { createRemoteUser, getDevices } from "$lib/sync/sync";
+    import { createRemoteUser, generateSyncPin, getDevices } from "$lib/sync/sync";
 
     let uuid = $state();
     let theme = $state("cosmo");
@@ -14,6 +14,7 @@
     let syncPopupAgreePrivacy = $state(false)
     let doSync = $state(false)
     let yourDevices = $state([])
+    let syncPin = $state(false)
 
     let showSecretCounter = $state(0);
     let showSecretTheme = $derived(showSecretCounter >= 5 ? true : false);
@@ -25,8 +26,8 @@
         theme = tmpTheme;
         uuid = tmpUUID;
         device = tmpDevice;
-        showSecretCounter = localStorage.getItem("secretCounter");
-        if (tmpTheme !== "cosmo" || tmpTheme !== "spacelab" || tmpTheme !== "slate") {
+        showSecretCounter = Number(localStorage.getItem("secretCounter") || 0);
+        if (tmpTheme !== "cosmo" && tmpTheme !== "spacelab" && tmpTheme !== "slate") {
             showSecretCounter = 69
             showSecretTheme = true
             updateSecret()
@@ -34,8 +35,10 @@
     });
 
     onMount(async () => {
-        const tmpSync = await getSync()
+        const tmpSync = await getSync();
         doSync = tmpSync;
+        const tmpUUID = await genUUID();
+        uuid = tmpUUID
         if (tmpSync) {
             const yourTmpDevices = await getDevices($state.snapshot(uuid))
             yourDevices = yourTmpDevices  
@@ -60,6 +63,8 @@
     }
 
     async function enableSync() {
+        const tmpUUID = await genUUID();
+        uuid = tmpUUID
         await createRemoteUser($state.snapshot(uuid), $state.snapshot(device))
         const yourTmpDevices = await getDevices($state.snapshot(uuid))
         yourDevices = yourTmpDevices
@@ -69,6 +74,17 @@
         if (e.key === 'Escape') {
             showPrivacyPopup = false;
         }
+    }
+
+    async function createSyncPin() {
+        const tmpUUID = await genUUID();
+        uuid = tmpUUID
+        const res = await generateSyncPin(uuid)
+        if (res === false) {
+            alert("Sync Pin already exists");
+            return
+        }
+        syncPin = res.pin
     }
 
     onMount(() => {
@@ -136,6 +152,12 @@
                         <li>{device.name} ({device.os})</li>
                     {/each}
                     </ul>
+                    <h4>Pair Device</h4>
+                    <button onclick={async ()=>{
+                        await createSyncPin()
+                    }} class="btn btn-danger">Create PIN</button>
+                    {#if syncPin !== false}<p>Your PIN: {syncPin}</p>{/if}
+                    <label for="syncPin">Enter PIN</label><input type="number" id="syncPin">
                 {/if}
             </div>
         </div>
