@@ -28,7 +28,8 @@
 		"android:clean": "rm -rf build && cd android && ./gradlew clean",
 		"backend:dev": "node --watch src/backend/main.js",
 		"backend:prod": "node src/backend/main.js",
-		"postinstall": "electron-builder install-app-deps"
+		"postinstall": "electron-builder install-app-deps",
+		"clean": "rm -rf dist .flatpak-builder build && cd android && ./gradlew clean"
 	},
 	"build": {
 		"npmRebuild": true,
