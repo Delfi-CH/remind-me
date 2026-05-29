@@ -1,0 +1,25 @@
+# Maintainer: Delfi-CH <delfi@delfi.dev>
+
+pkgname=remind-me-electron-bin
+pkgver=0.8.0
+pkgrel=1
+pkgdesc="A minimal cross-platform reminder application built with Electron and Svelte."
+arch=('x86_64')
+url="https://github.com/Delfi-CH/remind-me"
+license=('GPL-3.0-or-later')
+
+depends=(gtk3 nss libxss libxtst alsa-lib libnotify xdg-utils libsecret at-spi2-core util-linux-libs libappindicator)
+provides=(sysfind)
+
+conflicts=('remind-me-electron' 'remind-me-electron-git' 'remind-me-electron-debug' 'remind-me-electron-git-debug')
+
+source=("https://github.com/Delfi-CH/remind-me/releases/download/latest/Remind.Me-${pkgver}-amd64.deb")
+sha256sums=('SKIP')
+
+package() {
+    cd "$srcdir"
+
+    ar x Remind.Me-${pkgver}-amd64.deb
+
+    bsdtar -xf data.tar.* -C "$pkgdir"
+}
