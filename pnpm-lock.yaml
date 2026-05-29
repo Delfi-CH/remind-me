@@ -77,6 +77,9 @@ importers:
       pg:
         specifier: ^8.20.0
         version: 8.20.0
+      side-channel:
+        specifier: ^1.1.0
+        version: 1.1.0
     devDependencies:
       '@capacitor/cli':
         specifier: ^8.3.0
