@@ -14,9 +14,11 @@
 		"electron:build-linux": "electron-rebuild && vite build && electron-builder -l tar.xz",
 		"electron:build-windows": "electron-rebuild && vite build && electron-builder -w nsis",
 		"electron:dist-linux": "electron-rebuild && vite build && electron-builder --linux --x64",
+		"electron:dist-flatpak": "electron-rebuild && vite build && electron-builder --linux flatpak --x64",
 		"electron:dist-windows": "electron-rebuild && vite build && electron-builder --windows --x64",
 		"electron:dist-mac": "electron-rebuild && vite build && electron-builder --mac --arm64",
 		"electron:dist-linux-arm": "electron-rebuild && vite build && electron-builder --linux --arm64",
+		"electron:dist-flatpak-arm": "electron-rebuild && vite build && electron-builder --linux flatpak --arm64",
 		"electron:dist-windows-arm": "electron-rebuild && vite build && electron-builder --windows --arm64",
 		"electron:dist-mac-intel": "electron-rebuild && vite build && electron-builder --mac --x64",
 		"electron:clean": "rm -rf build && rm -rf dist",
@@ -26,7 +28,7 @@
 		"android:clean": "rm -rf build && cd android && ./gradlew clean",
 		"backend:dev": "node --watch src/backend/main.js",
 		"backend:prod": "node src/backend/main.js",
-		"postinstall": "electron-rebuild"
+		"postinstall": "electron-builder install-app-deps"
 	},
 	"build": {
 		"npmRebuild": true,
@@ -102,9 +104,6 @@
 					"target": "deb"
 				},
 				{
-					"target": "flatpak"
-				},
-				{
 					"target": "tar.xz"
 				}
 			],
@@ -146,7 +145,6 @@
 	},
 	"devDependencies": {
 		"@capacitor/cli": "^8.3.0",
-		"@electron/rebuild": "^4.0.3",
 		"@eslint/compat": "^2.0.4",
 		"@eslint/js": "^10.0.1",
 		"@sveltejs/adapter-static": "^3.0.10",
