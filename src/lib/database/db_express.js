@@ -1,16 +1,4 @@
-import { Pool } from "pg";
-
-export const pool = new Pool({
-    user: "remind_me",
-    password: "remind-me",
-    host: "localhost",
-    port: 5432,
-    database: "remind_me",
-    max: 10,
-    idleTimeoutMillis: 30000
-});
-
-export async function initDB_Express() {
+export async function initDB_Express(pool) {
     try {
         await pool.query(`
             CREATE TABLE IF NOT EXISTS users (
@@ -45,13 +33,14 @@ export async function initDB_Express() {
             );
         `);
 
+        return pool
     } catch (err) {
         console.error("DB init failed:", err);
         throw err;
     }
 }
 
-export async function createUser_Express(uuid) {
+export async function createUser_Express(uuid, pool) {
     try {
         const queryText = "INSERT INTO users(uuid) VALUES($1)"
         await pool.query(queryText, [uuid])
@@ -62,7 +51,7 @@ export async function createUser_Express(uuid) {
     }
 }
 
-export async function addDevice_Express(uuid, device) {
+export async function addDevice_Express(uuid, device, pool) {
     try {
         const userId = (await pool.query("SELECT id FROM users WHERE uuid = $1", [uuid])).rows
         if (userId.length === 0) {
@@ -82,7 +71,7 @@ export async function addDevice_Express(uuid, device) {
     }   
 }
 
-export async function deleteDevice_Express(uuid, device) {
+export async function deleteDevice_Express(uuid, device, pool) {
     try {
         const userId = (await pool.query("SELECT id FROM users WHERE uuid = $1", [uuid])).rows
         if (userId.length === 0) {
@@ -98,7 +87,7 @@ export async function deleteDevice_Express(uuid, device) {
     }  
 }
 
-export async function getUser_Express(uuid) {
+export async function getUser_Express(uuid, pool) {
     try {
         const queryText = `
             SELECT 
@@ -120,7 +109,7 @@ export async function getUser_Express(uuid) {
     } 
 }
 
-export async function generateSyncCode_Express(uuid) {
+export async function generateSyncCode_Express(uuid, pool) {
     try {
         const rand = new Uint16Array(1)
         crypto.getRandomValues(rand)
@@ -139,7 +128,7 @@ export async function generateSyncCode_Express(uuid) {
     }
 }
 
-export async function deleteOldSyncCodes_Express() {
+export async function deleteOldSyncCodes_Express(pool) {
     try {
         await pool.query("DELETE from syncPins WHERE createdAt <= NOW() - INTERVAL '15 minutes'")
     } catch (e) {
@@ -147,7 +136,7 @@ export async function deleteOldSyncCodes_Express() {
     }
 }
 
-export async function validateSyncPin_Express(syncPin) {
+export async function validateSyncPin_Express(syncPin, pool) {
     try {
         const res = await pool.query("SELECT syncPins.userFK FROM syncPins WHERE syncPin = $1", [syncPin])
         const res2 = await pool.query("SELECT users.uuid FROM users WHERE id = $1", [res.rows[0].userfk])

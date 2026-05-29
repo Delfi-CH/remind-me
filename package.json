@@ -2,7 +2,7 @@
 	"name": "remind-me",
 	"private": true,
 	"description": "Minimal App to set reminders",
-	"author": {},
+	"author": "Delfi-CH <delfi@delfi.dev>",
 	"version": "0.8.0",
 	"type": "module",
 	"main": "src/electron/main.js",
