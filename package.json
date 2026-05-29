@@ -13,9 +13,12 @@
 		"electron:build": "electron-rebuild && vite build && electron-builder -l tar.xz -w nsis",
 		"electron:build-linux": "electron-rebuild && vite build && electron-builder -l tar.xz",
 		"electron:build-windows": "electron-rebuild && vite build && electron-builder -w nsis",
-		"electron:dist-linux": "electron-rebuild && vite build && electron-builder --linux",
-		"electron:dist-windows": "electron-rebuild && vite build && electron-builder --windows",
-		"electron:dist-mac": "electron-rebuild && vite build && electron-builder --mac",
+		"electron:dist-linux": "electron-rebuild && vite build && electron-builder --linux --x64",
+		"electron:dist-windows": "electron-rebuild && vite build && electron-builder --windows --x64",
+		"electron:dist-mac": "electron-rebuild && vite build && electron-builder --mac --arm64",
+		"electron:dist-linux-arm": "electron-rebuild && vite build && electron-builder --linux --arm64",
+		"electron:dist-windows-arm": "electron-rebuild && vite build && electron-builder --windows --arm64",
+		"electron:dist-mac-intel": "electron-rebuild && vite build && electron-builder --mac --x64",
 		"electron:clean": "rm -rf build && rm -rf dist",
 		"android:dev": "vite build && cap sync android && cap run android",
 		"android:build": "vite build && cap sync android && cd android && ./gradlew build && cp app/build/outputs/apk/debug/app-debug.apk ../remind_me-android.apk",
@@ -35,8 +38,6 @@
 			"buildResources": "build"
 		},
 		"files": [
-			"dist/**/*",
-			"dist-electron/**/*",
 			"!**/*.map",
 			"!**/test/**",
 			"!**/*.md",
@@ -51,11 +52,7 @@
 		"win": {
 			"target": [
 				{
-					"target": "nsis",
-					"arch": [
-						"x64",
-						"arm64"
-					]
+					"target": "nsis"
 				}
 			],
 			"artifactName": "${productName}-Setup-${version}-${arch}.${ext}"
@@ -70,18 +67,10 @@
 		"mac": {
 			"target": [
 				{
-					"target": "dmg",
-					"arch": [
-						"x64",
-						"arm64"
-					]
+					"target": "dmg"
 				},
 				{
-					"target": "zip",
-					"arch": [
-						"x64",
-						"arm64"
-					]
+					"target": "zip"
 				}
 			],
 			"category": "public.app-category.productivity",
@@ -106,34 +95,19 @@
 		"linux": {
 			"target": [
 				{
-					"target": "AppImage",
-					"arch": [
-						"x64"
-					]
+					"target": "AppImage"
 				},
 				{
-					"target": "deb",
-					"arch": [
-						"x64"
-					]
+					"target": "deb"
 				},
 				{
-					"target": "rpm",
-					"arch": [
-						"x64"
-					]
+					"target": "rpm"
 				},
 				{
-					"target": "pacman",
-					"arch": [
-						"x64"
-					]
+					"target": "flatpak"
 				},
 				{
-					"target": "flatpak",
-					"arch": [
-						"x64"
-					]
+					"target": "tar.xz"
 				}
 			],
 			"category": "Utility",
@@ -166,7 +140,8 @@
 				"libuuid",
 				"libsecret",
 				"libappindicator"
-			]
+			],
+			"compression": "bzip2"
 		},
 		"flatpak": {
 			"runtime": "org.freedesktop.Platform",
