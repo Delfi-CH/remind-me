@@ -73,6 +73,7 @@
 					"target": "zip"
 				}
 			],
+			"extendInfo": {},
 			"category": "public.app-category.productivity",
 			"artifactName": "${productName}-${version}-${arch}.${ext}"
 		},

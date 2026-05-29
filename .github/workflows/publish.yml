@@ -9,101 +9,159 @@ permissions:
   contents: write
 
 jobs:
-  build:
-    strategy:
-      matrix:
-        os: [ubuntu-24.04, ubuntu-24.04-arm, windows-2025, windows-11-arm, macos-26, macos-26-intel]
-
-    runs-on: ${{ matrix.os }}
-
+  build-linux-x64:
+    runs-on: ubuntu-24.04
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v4
         with:
           version: 10
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: pnpm
 
-      - name: Install Project Dependencies
-        run: pnpm install --frozen-lockfile
+      - run: pnpm install --frozen-lockfile
 
       - name: Install Linux Packaging tools
-        if: ${{matrix.os == 'ubuntu-24.04' || matrix.os == 'ubuntu-24.04-arm'}}
         run: |
           sudo apt-get update
           sudo apt-get install -y \
-            build-essential \
-            fakeroot \
-            rpm \
-            libarchive-tools \
-            desktop-file-utils \
-            libc6-dev \
-            squashfs-tools \
-            xz-utils \
-            zsync \
-            flatpak \
-            flatpak-builder \
-            libfuse2 \
-            icnsutils \
-            graphicsmagick \
-            imagemagick
+            build-essential fakeroot rpm libarchive-tools desktop-file-utils \
+            libc6-dev squashfs-tools xz-utils zsync flatpak flatpak-builder \
+            libfuse2 icnsutils graphicsmagick imagemagick
 
-      - name: Build Electron (Linux x64)
-        if: matrix.os == 'ubuntu-24.04'
-        run: pnpm run electron:dist-linux
+      - run: pnpm run electron:dist-linux
 
-      - name: Build Electron (Linux ARM)
-        if: matrix.os == 'ubuntu-24.04-arm'
-        run: pnpm run electron:dist-linux-arm
-
-      - name: Build Electron (Windows)
-        if: matrix.os == 'windows-2025'
-        run: pnpm run electron:dist-windows
-
-      - name: Build Electron (Windows ARM)
-        if: matrix.os == 'windows-11-arm'
-        run: pnpm run electron:dist-windows-arm
-
-      - name: Build Electron (MacOS ARM)
-        if: matrix.os == 'macos-26'
-        run: pnpm run electron:dist-mac
-
-      - name: Build Electron (MacOS Intel)
-        if: matrix.os == 'macos-26-intel'
-        run: pnpm run electron:dist-mac-intel
-
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4
         with:
-          name: build-${{ matrix.os }}
+          name: build-linux-x64
+          path: dist/
+
+  build-linux-arm:
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: { version: 10 }
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+
+      - name: Install Linux Packaging tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential fakeroot rpm libarchive-tools desktop-file-utils \
+            libc6-dev squashfs-tools xz-utils zsync flatpak flatpak-builder \
+            libfuse2 icnsutils graphicsmagick imagemagick
+
+      - run: pnpm run electron:dist-linux-arm
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: build-linux-arm
+          path: dist/
+
+  build-windows-x64:
+    runs-on: windows-2025
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm run electron:dist-windows
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: build-windows-x64
+          path: dist/
+
+  build-windows-arm:
+    runs-on: windows-11-arm
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: { version: 10 }
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm run electron:dist-windows-arm
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: build-windows-arm
+          path: dist/
+
+  build-macos-arm:
+    runs-on: macos-26
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: { version: 10 }
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm run electron:dist-mac
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: build-macos-arm
+          path: dist/
+
+  build-macos-intel:
+    runs-on: macos-26-intel
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: { version: 10 }
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm run electron:dist-mac-intel
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: build-macos-intel
           path: dist/
 
   android:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v4
         with:
           version: 10
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: pnpm
 
-      - name: Install deps
-        run: pnpm install --frozen-lockfile
+      - run: pnpm install --frozen-lockfile
 
       - uses: actions/setup-java@v4
         with:
@@ -112,26 +170,34 @@ jobs:
 
       - uses: android-actions/setup-android@v3
 
-      - name: Build Android
-        run: pnpm run android:build
+      - run: pnpm run android:build
 
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4
         with:
           name: android
           path: "*.apk"
 
   release:
-    needs: [build, android]
+    needs:
+      - build-linux-x64
+      - build-linux-arm
+      - build-windows-x64
+      - build-windows-arm
+      - build-macos-arm
+      - build-macos-intel
+      - android
+
     runs-on: ubuntu-latest
 
     steps:
-      - name: Download all artifacts
-        uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v4
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: latest
+          name: Latest Build
+          prerelease: false
           files: |
             **/*.tar.*
             **/*.deb
@@ -141,9 +207,5 @@ jobs:
             **/*.dmg
             **/*.zip
             **/*.apk
-
-          tag_name: latest
-          name: Latest Build
-          prerelease: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
