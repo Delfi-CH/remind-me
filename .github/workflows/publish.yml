@@ -134,7 +134,6 @@ jobs:
         with:
           files: |
             **/*.tar.*
-            **/*.rpm
             **/*.deb
             **/*.AppImage
             **/*.flatpak

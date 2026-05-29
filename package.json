@@ -101,9 +101,6 @@
 					"target": "deb"
 				},
 				{
-					"target": "rpm"
-				},
-				{
 					"target": "flatpak"
 				},
 				{
@@ -128,20 +125,6 @@
 				"libsecret-1-0",
 				"libappindicator3-1"
 			]
-		},
-		"rpm": {
-			"depends": [
-				"libnotify",
-				"nss",
-				"libXScrnSaver",
-				"libXtst",
-				"xdg-utils",
-				"at-spi2-core",
-				"libuuid",
-				"libsecret",
-				"libappindicator"
-			],
-			"compression": "bzip2"
 		},
 		"flatpak": {
 			"runtime": "org.freedesktop.Platform",
