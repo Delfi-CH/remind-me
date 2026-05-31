@@ -180,6 +180,7 @@
 		"is-electron": "^2.2.2",
 		"linux-os-info": "^2.0.0",
 		"node-cron": "^4.2.1",
+		"object-inspect": "^1.13.4",
 		"pg": "^8.20.0",
 		"side-channel": "^1.1.0"
 	}

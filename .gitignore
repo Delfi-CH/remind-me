@@ -34,3 +34,6 @@ dist
 data/
 
 .flatpak-builder/**
+!archlinux/PKGBUILD
+archlinux/pkg
+archlinux/src
