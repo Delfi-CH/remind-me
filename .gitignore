@@ -37,3 +37,5 @@ data/
 !archlinux/PKGBUILD
 archlinux/pkg
 archlinux/src
+archlinux/Remind.Me*
+archlinux/remind-me*
