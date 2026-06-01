@@ -23,7 +23,7 @@ jobs:
           node-version: 22
           cache: pnpm
 
-      - run: pnpm install --frozen-lockfile
+      - run: pnpm install
 
       - name: Install Linux Packaging tools
         run: |
@@ -50,7 +50,7 @@ jobs:
         with:
           node-version: 22
           cache: pnpm
-      - run: pnpm install --frozen-lockfile
+      - run: pnpm install
 
       - name: Install Linux Packaging tools
         run: |
@@ -81,7 +81,7 @@ jobs:
           node-version: 22
           cache: pnpm
 
-      - run: pnpm install --frozen-lockfile
+      - run: pnpm install
 
       - run: pnpm run electron:dist-windows
 
@@ -100,7 +100,7 @@ jobs:
         with:
           node-version: 22
           cache: pnpm
-      - run: pnpm install --frozen-lockfile
+      - run: pnpm install
 
       - run: pnpm run electron:dist-windows-arm
 
@@ -123,7 +123,7 @@ jobs:
           node-version: 22
           cache: pnpm
 
-      - run: pnpm install --frozen-lockfile
+      - run: pnpm install
 
       - uses: actions/setup-java@v4
         with:
