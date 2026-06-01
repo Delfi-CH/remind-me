@@ -14,16 +14,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 10
-
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: pnpm
+          cache: npm
 
-      - run: pnpm install
+      - run: npm ci
 
       - name: Install Linux Packaging tools
         run: |
@@ -33,7 +29,7 @@ jobs:
             libc6-dev squashfs-tools xz-utils zsync \
             libfuse2 icnsutils graphicsmagick imagemagick
 
-      - run: pnpm run electron:dist-linux
+      - run: npm run electron:dist-linux
 
       - uses: actions/upload-artifact@v4
         with:
@@ -44,13 +40,13 @@ jobs:
     runs-on: ubuntu-24.04-arm
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-        with: { version: 10 }
+
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: pnpm
-      - run: pnpm install
+          cache: npm
+
+      - run: npm ci
 
       - name: Install Linux Packaging tools
         run: |
@@ -60,7 +56,7 @@ jobs:
             libc6-dev squashfs-tools xz-utils zsync \
             libfuse2 icnsutils graphicsmagick imagemagick
 
-      - run: pnpm run electron:dist-linux-arm
+      - run: npm run electron:dist-linux-arm
 
       - uses: actions/upload-artifact@v4
         with:
@@ -72,18 +68,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 10
-
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: pnpm
+          cache: npm
 
-      - run: pnpm install
+      - run: npm ci
 
-      - run: pnpm run electron:dist-windows
+      - run: npm run electron:dist-windows
 
       - uses: actions/upload-artifact@v4
         with:
@@ -94,15 +86,15 @@ jobs:
     runs-on: windows-11-arm
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-        with: { version: 10 }
+
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: pnpm
-      - run: pnpm install
+          cache: npm
 
-      - run: pnpm run electron:dist-windows-arm
+      - run: npm ci
+
+      - run: npm run electron:dist-windows-arm
 
       - uses: actions/upload-artifact@v4
         with:
@@ -114,16 +106,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 10
-
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: pnpm
+          cache: npm
 
-      - run: pnpm install
+      - run: npm ci
 
       - uses: actions/setup-java@v4
         with:
@@ -132,7 +120,7 @@ jobs:
 
       - uses: android-actions/setup-android@v3
 
-      - run: pnpm run android:build
+      - run: npm run android:build
 
       - uses: actions/upload-artifact@v4
         with:
