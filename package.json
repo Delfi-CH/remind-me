@@ -46,7 +46,8 @@
 			"!**/*.md",
 			"src/electron/**/*",
 			"src/**/**/**",
-			"build/**/**/**"
+			"build/**/**/**",
+			"node_modules/**/*"
 		],
 		"asar": true,
 		"asarUnpack": [
