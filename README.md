@@ -23,7 +23,7 @@ git clone -b publish https://github.com/Delfi-CH/remind-me.git
 
 cd remind-me/archlinux
 
-makepkg -Si
+makepkg -si
 ```
 
 #### Other Distributions
